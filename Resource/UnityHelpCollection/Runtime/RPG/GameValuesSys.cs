@@ -3,27 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameValuesSys : MonoBehaviour {
-
-	public int healthLimit { get; set; }
-    public int magicLimit { get; set; }
+    public int ID { get; set; }
+    public int healthLimit;
+    public int magicLimit;
     /// <summary>
     /// 当前生命魔法值
     /// </summary>
     public int HP;
     public int MP;
-    public float physicalResistance { get; set; }
-    public float magicResistance { get; set; }
-    public int attackValue { get; set; }
-    public int attackSpeed { get; set; }
+
+    public float physicalResistance;
+    public float magicResistance;
+    public int attackValue;
+    public int attackSpeed;
     /// <summary>
     /// 法术强度
     /// </summary>
-    public float spellPower { get; set; }
-    public float CritRate { get; set; }
-    public float dodgeRate { get; set; }
-    public int hpRestoreSpeed { get; set; }
-    public int mpRestoreSpeed { get; set; }
-    public int CritcalMult { get; set; }
+    public float spellPower;
+    public float CritRate;
+    public float dodgeRate;
+    public int hpRestoreSpeed;
+    public int mpRestoreSpeed;
+    public int CritcalMult;
 
     private WaitForSeconds restoreDelta = new WaitForSeconds(1);
 

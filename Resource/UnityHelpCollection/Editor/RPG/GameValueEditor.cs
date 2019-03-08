@@ -7,7 +7,6 @@ public class GameValueEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
         var show = target as GameValuesSys;
         EditorGUILayout.LabelField("生命上限");
         show.healthLimit = EditorGUILayout.IntField(show.healthLimit);
@@ -33,8 +32,7 @@ public class GameValueEditor : Editor
         show.mpRestoreSpeed = EditorGUILayout.IntField(show.mpRestoreSpeed);
         EditorGUILayout.LabelField("暴击倍数");
         show.CritcalMult = EditorGUILayout.IntField(show.CritcalMult);
-
-
+        
 
 
 

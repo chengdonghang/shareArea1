@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(GameValuesSys))]
 public class AttributeSys:MonoBehaviour
 {
+    public int ID { get; set; }
     public int strength { get; private set; }
     public int agile { get; private set; }
     public int intelligence { get; private set; }
