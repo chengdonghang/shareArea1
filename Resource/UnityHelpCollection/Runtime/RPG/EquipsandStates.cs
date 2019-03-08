@@ -28,6 +28,50 @@ public enum EquipType
     dodgeRate
 }
 
+public enum EquipmentType
+{
+    weapon,
+    /// <summary>
+    /// 头盔
+    /// </summary>
+    helm,
+    /// <summary>
+    /// 手套
+    /// </summary>
+    glove,
+    clothes,
+    pants,
+    shoes,
+    /// <summary>
+    /// 腰带
+    /// </summary>
+    belt,
+    /// <summary>
+    /// 饰品
+    /// </summary>
+    decorater
+}
+
+public enum WeaponType
+{
+    doubleSword,
+    glove,
+    /// <summary>
+    /// 匕首
+    /// </summary>
+    dagger,
+    gun,
+    /// <summary>
+    /// 弓
+    /// </summary>
+    bow,
+    magicBall,
+    /// <summary>
+    /// 法杖
+    /// </summary>
+    wand
+}
+
 public class e_Health : IEquip
 {
     private int value;
