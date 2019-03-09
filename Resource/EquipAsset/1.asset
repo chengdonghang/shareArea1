@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf67225ad174d455080e6d431fb1414a, type: 3}
-  m_Name: test
+  m_Script: {fileID: 11500000, guid: 53d95904932cd4a499a5daf6d6d354a9, type: 3}
+  m_Name: 1
   m_EditorClassIdentifier: 
   equipmentType: 0
-  spawns: []
-  baseE: {fileID: 0}
+  spawns:
+  - equipType: 3
+    value: 10
+  - equipType: 7
+    value: 30
