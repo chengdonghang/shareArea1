@@ -8,7 +8,7 @@ namespace SteeringSys
     [RequireComponent(typeof(Radar))]
     public class Vehicle : MonoBehaviour
     {
-        private Steering[] steerings;
+        protected List<Steering> steerings = new List<Steering>(5);
         public float maxSpeed = 10;
         public float maxForce = 100;
         protected float sqrMaxSpeed;
@@ -20,6 +20,7 @@ namespace SteeringSys
         private Vector3 steeringForce;
         protected Vector3 acceleration;
         public float timer;
+        public bool DebugMode = true;
 
         /// <summary>
         /// 角色在何距离时开始减速 
@@ -56,7 +57,7 @@ namespace SteeringSys
             sqrMaxSpeed = maxSpeed * maxSpeed;
             timer = 0;
             
-            steerings = GetComponents<Steering>();
+            steerings.AddRange(GetComponents<Steering>());
             foreach (var s in steerings)
             {
                 s.enabled = false;
@@ -68,10 +69,12 @@ namespace SteeringSys
         {
             timer += Time.deltaTime;
             steeringForce = new Vector3(0, 0, 0);
-            if(timer>computeInterval)
+            if(timer > computeInterval)
             {
                 foreach(Steering s in steerings)
                 {
+                    if (DebugMode)
+                        Debug.Log("name:"+s.ToString()+"return force:" + s.Force());
                     if (s.enabled)
                     {
                         steeringForce += s.Force() * s.weight;
