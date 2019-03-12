@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using OfficeOpenXml;
@@ -23,13 +24,28 @@ public class ExcelLoader
                     var equip = AssetDatabase.LoadAssetAtPath<Equipment>(ScriptObjectCreator.pathBase + "EquipAsset/" + itemID + ".asset");
                     if (equip != null)
                     {
+                        //如果该项已经在spawns里面出现，就不添加只修改，否则需要添加该项
                         equip.ID = itemID;
                         equip.name = sheet.Cells[i, 2].Text;
+                        Dictionary<EquipType, int> dic = new Dictionary<EquipType, int>();
+                        int k = 0;
+                        foreach(var v in equip.spawns) { dic.Add(v.equipType, k++); }
                         for(int j = 3; j < 3 + Enum.GetNames(typeof(EquipType)).Length; j++)
                         {
                             int value = int.Parse(sheet.Cells[i, j].Text);
-                            if(value!=0)
-                                equip.spawns.Add(new Equipment.SpawnEquip((EquipType)(j - 3), value));
+                            if (value != 0)
+                            {
+                                var key = (EquipType)(j - 3);
+                                if (dic.ContainsKey(key))
+                                {
+                                    equip.spawns[dic[key]].value = value;
+                                }
+                                else
+                                {
+                                    equip.spawns.Add(new Equipment.SpawnEquip(key, value));
+                                }
+                                
+                            }
                         }
                     }
                     else
@@ -43,8 +59,8 @@ public class ExcelLoader
                             if(value!=0)
                                 equip.spawns.Add(new Equipment.SpawnEquip((EquipType)(j - 3), value));
                         }
+                        SaveObjData(equip, equip.ID, "/EquipAsset/");
                     }
-                    SaveObjData(equip, equip.ID, "/EquipAsset/");
                     i++;
                 }
             }

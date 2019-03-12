@@ -12,7 +12,7 @@ namespace SteeringSys
         public float characterRadius = 1.2f;
         public float slowDownDistance;
         public GameObject target;
-        public UnityEvent Arrive;
+        public UnityEvent Arrive = new UnityEvent();
         private Vector3 desiredVelocity;
         private Vehicle m_vehicle;
         private float maxSpeed;
@@ -24,6 +24,7 @@ namespace SteeringSys
             characterRadius = m_vehicle.characterRadius;
             maxSpeed = m_vehicle.maxSpeed;
             isPlanar = m_vehicle.isPlanar;
+
         }
         public override Vector3 Force()
         {

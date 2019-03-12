@@ -46,7 +46,7 @@ namespace SteeringSys
         #endregion
 
         #region 增添操纵力
-        public void ArriveTo(GameObject destination)
+        public SteeringForArrive ArriveTo(GameObject destination)
         {
             var comp = GetComponent<SteeringForArrive>();
             if(!comp)
@@ -56,9 +56,11 @@ namespace SteeringSys
             comp.slowDownDistance = SlowDownDis;
             comp.isPlanar = isPlanar;
             comp.target = destination;
+            steerings.Add(comp);
+            return comp;
         }
 
-        public void FollowPath(List<Transform> path)
+        public SteeringFollowPath FollowPath(List<Transform> path)
         {
             var comp = GetComponent<SteeringFollowPath>();
             if (!comp)
@@ -68,31 +70,42 @@ namespace SteeringSys
             comp.slowDownDistance = SlowDownDis;
             comp.isPlanar = isPlanar;
             comp.SetTargets(path);
+            steerings.Add(comp);
+            return comp;
         }
      
-        public void ChaseTo(GameObject target)
+        public SteeringForPursuit ChaseTo(GameObject target)
         {
             var comp = GetComponent<SteeringForPursuit>();
             if (!comp)
                 comp = gameObject.AddComponent<SteeringForPursuit>();
             comp.target = target;
+            steerings.Add(comp);
+            return comp;
         }
 
-        public void FleeFrom(GameObject target)
+        public SteeringForFlee FleeFrom(GameObject target)
         {
             var comp = GetComponent<SteeringForFlee>();
             if (!comp)
                 comp = gameObject.AddComponent<SteeringForFlee>();
             comp.target = target;
+            steerings.Add(comp);
+            return comp;
         }
         /// <summary>
         /// 增添一个操纵力，不改变其默认参数
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public void AddForce<T>()where T : Steering
+        public T AddForce<T>()where T : Steering
         {
             if (!GetComponent<T>())
-                gameObject.AddComponent<T>();
+            {
+                var comp = gameObject.AddComponent<T>();
+                steerings.Add(comp);
+                return comp;
+            }
+            return null;
         }
         #endregion
 

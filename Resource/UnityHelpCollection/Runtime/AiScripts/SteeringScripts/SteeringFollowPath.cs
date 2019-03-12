@@ -17,7 +17,7 @@ namespace SteeringSys
         public float pointRadius;
         public int AttCurrentNode { get { return currentNode; } set { if (value >= 0 && value < numberOfNodes) currentNode = value; } }
         public string whereHasPath;
-        public UnityEvent Arrive;
+        public UnityEvent Arrive = new UnityEvent();
 
         public float slowDownDistance = 0.3f;
         public float arrivalDistance = 0.1f;
