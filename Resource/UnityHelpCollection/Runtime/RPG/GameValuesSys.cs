@@ -1,32 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
+public class Value1Changed : UnityEvent<float> { }
 
 public class GameValuesSys : MonoBehaviour {
     public int ID { get; set; }
-    public int healthLimit;
-    public int magicLimit;
+    public int healthLimit = 100;
+    public int magicLimit = 100;
     /// <summary>
     /// 当前生命魔法值
     /// </summary>
-    public int HP;
-    public int MP;
+    public int HP = 100;
+    public int MP = 100;
 
-    public float physicalResistance;
-    public float magicResistance;
-    public int attackValue;
-    public int attackSpeed;
+    public Value1Changed HpChanged = new Value1Changed();
+    public Value1Changed MpChanged = new Value1Changed();
+
+    public float physicalResistance = 1.0f;
+    public float magicResistance = 1.0f;
+    public int attackValue = 10;
+    public int attackSpeed = 10;
     /// <summary>
     /// 法术强度
     /// </summary>
-    public float spellPower;
-    public float CritRate;
-    public float dodgeRate;
-    public int hpRestoreSpeed;
-    public int mpRestoreSpeed;
-    public int CritcalMult;
+    public float spellPower = 1.0f;
+    public float CritRate = 1.0f;
+    public float dodgeRate = 1.0f;
+    public int hpRestoreSpeed = 1;
+    public int mpRestoreSpeed = 1;
+    public int CritcalMult = 1;
 
     private WaitForSeconds restoreDelta = new WaitForSeconds(1);
+
+    void Awake()
+    {
+        
+    }
 
     private IEnumerator Restore()
     {
@@ -51,20 +62,22 @@ public class GameValuesSys : MonoBehaviour {
     }
 
     /// <summary>
-    /// 
+    /// if (dodgeRate >= Random.value) return false;
     /// </summary>
     /// <param name="value"></param>
     /// <returns>返回false代表闪避成功</returns>
     public bool HurtByPhysical(int value)
     {
-        if (dodgeRate >= Random.value) return false;
+        
         HP -= Mathf.FloorToInt(value * physicalResistance);
+        HpChanged.Invoke((float)HP / healthLimit);
         return true;
     }
 
     public void HurtByMagic(int value)
     {
         MP -= Mathf.FloorToInt(value * magicResistance);
+        HpChanged.Invoke((float)HP / healthLimit);
     }
 
     public int givePhyDamage()

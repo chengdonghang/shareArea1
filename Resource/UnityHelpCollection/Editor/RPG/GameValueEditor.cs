@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEditor;
 
-[CustomEditor(typeof(GameValuesSys))]
 public class GameValueEditor : Editor
 {
+    /*
     public override void OnInspectorGUI()
     {
         var show = target as GameValuesSys;
@@ -33,9 +33,5 @@ public class GameValueEditor : Editor
         EditorGUILayout.LabelField("暴击倍数");
         show.CritcalMult = EditorGUILayout.IntField(show.CritcalMult);
         
-
-
-
-
-    }
+    }*/
 }
