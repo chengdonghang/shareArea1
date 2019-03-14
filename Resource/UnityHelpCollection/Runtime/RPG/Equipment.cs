@@ -12,8 +12,8 @@ public class Equipment : ScriptableObject,IEquipment
 {
     public string ID { get { return id; } set{ id = value; } }
     public string Name { get { return e_Name; } set { e_Name = value; } }
-    private string id;
-    private string e_Name;
+    [SerializeField]private string id;
+    [SerializeField]private string e_Name;
     public EquipmentType equipmentType;
 
     public List<IEquip> Equips = new List<IEquip>();
