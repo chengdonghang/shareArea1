@@ -27,6 +27,7 @@ public class ExcelLoader
                         //如果该项已经在spawns里面出现，就不添加只修改，否则需要添加该项
                         equip.ID = itemID;
                         equip.name = sheet.Cells[i, 2].Text;
+                        equip.Name = sheet.Cells[i, 2].Text;
                         Dictionary<EquipType, int> dic = new Dictionary<EquipType, int>();
                         int k = 0;
                         foreach(var v in equip.spawns) { dic.Add(v.equipType, k++); }

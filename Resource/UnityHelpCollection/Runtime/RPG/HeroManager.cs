@@ -19,7 +19,6 @@ public class HeroManager : MonoBehaviour,ModelInterface
     {
         valuesSys.HpChanged.AddListener(delegate (float value) { HpChanged(value); });
         valuesSys.MpChanged.AddListener(delegate (float value) { MpChanged(value); });
-
     }
 
     public void SetEquip(int EquipType, string equipID)

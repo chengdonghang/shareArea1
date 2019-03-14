@@ -8,6 +8,12 @@ public interface IEquip
     void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys);
 }
 
+public interface IStateEquip:IEquip
+{
+    void Equip();
+    void UnEquip();
+}
+
 public interface IState
 {
     void Enter(AttributeSys attributeSys, GameValuesSys valuesSys);

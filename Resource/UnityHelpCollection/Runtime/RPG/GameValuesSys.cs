@@ -27,7 +27,7 @@ public class GameValuesSys : MonoBehaviour {
     /// </summary>
     public float spellPower = 1.0f;
     public float CritRate = 1.0f;
-    public float dodgeRate = 1.0f;
+    public float dodgeRate = 0.0f;
     public int hpRestoreSpeed = 1;
     public int mpRestoreSpeed = 1;
     public int CritcalMult = 1;
@@ -61,23 +61,57 @@ public class GameValuesSys : MonoBehaviour {
         }
     }
 
+    void HpHasChanged()
+    {
+        if (HP > healthLimit) HP = healthLimit;
+        else if (HP < 0) HP = 0;
+        HpChanged.Invoke((float)HP / healthLimit);
+    }
+
+    void MpHasChanged()
+    {
+        if (MP > magicLimit) MP = magicLimit;
+        else if (MP < 0) MP = 0;
+        MpChanged.Invoke((float)MP / magicLimit);
+    }
+
     /// <summary>
-    /// if (dodgeRate >= Random.value) return false;
+    /// 
     /// </summary>
     /// <param name="value"></param>
     /// <returns>返回false代表闪避成功</returns>
     public bool HurtByPhysical(int value)
     {
-        
+        if (dodgeRate >= Random.value) return false;
         HP -= Mathf.FloorToInt(value * physicalResistance);
-        HpChanged.Invoke((float)HP / healthLimit);
+        HpHasChanged();
         return true;
     }
 
     public void HurtByMagic(int value)
     {
-        MP -= Mathf.FloorToInt(value * magicResistance);
-        HpChanged.Invoke((float)HP / healthLimit);
+        HP -= Mathf.FloorToInt(value * magicResistance);
+        HpHasChanged();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value">为增加的生命值</param>
+    public void ChangeHP(int value)
+    {
+        HP += value;
+        HpHasChanged();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value">为增加的魔法值</param>
+    public void ChangeMP(int value)
+    {
+        MP += value;
+        MpHasChanged();
     }
 
     public int givePhyDamage()

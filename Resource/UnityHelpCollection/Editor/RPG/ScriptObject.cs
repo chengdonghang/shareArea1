@@ -6,7 +6,7 @@ using System;
 public class ScriptObjectCreator
 {
     /// <summary>
-    /// resource文件夹路径
+    /// 利用Assetdatabase时的resource文件夹路径
     /// </summary>
     public static string pathBase = "Assets/shareArea1/Resource/";
     [MenuItem("Create/Equipment")]
