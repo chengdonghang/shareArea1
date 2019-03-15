@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public Slider experience;
     public Text LevelNumber;
     private Image[] skillsImage = new Image[6];
+    private Image[,] packageImage = new Image[6, 8];
 
     public HeroManager model;
 
@@ -27,6 +28,7 @@ public class UIManager : MonoBehaviour
             skillsImage[i - 1].sprite = null;
         }
         model.SkillChanged += SkillChanged;
+        model.PackageChanged += PackageChanged;
     }
 
     private void SkillChanged(int arg1, string arg2)
@@ -54,5 +56,9 @@ public class UIManager : MonoBehaviour
         HP.fillAmount = obj;
     }
 
+    private void PackageChanged(int row,int line,string id)
+    {
+
+    }
 
 }

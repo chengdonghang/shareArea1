@@ -10,7 +10,7 @@ public interface ModelInterface
     event Action<int,string> SkillChanged;
     event Action<int> LevelChanged;
     event Action<float> ExperienceChanged;
-    event Action<int, string> EquipChanged;
+    event Action<EquipmentType, string> EquipChanged;
     event Action<int, int, string> PackageChanged;
     void SetSkill(int slotNumber, string skillID);
     void SetEquip(int EquipType, string equipID);
