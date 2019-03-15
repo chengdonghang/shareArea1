@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 public static class m_Path
 {
     public static string pathBase = "Assets/shareArea1/Resource/";

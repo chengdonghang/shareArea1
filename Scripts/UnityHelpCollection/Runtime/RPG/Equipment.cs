@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public interface IEquipment{
-    void AddEquips();
-    List<IEquip> GetEquipments();
-}
+
 
 public class Equipment : ScriptableObject,IEquipment
 {
