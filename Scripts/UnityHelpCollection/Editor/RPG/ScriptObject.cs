@@ -5,10 +5,7 @@ using System;
 
 public class ScriptObjectCreator
 {
-    /// <summary>
-    /// 利用Assetdatabase时的resource文件夹路径
-    /// </summary>
-    public static string pathBase = "Assets/shareArea1/Resource/";
+
     [MenuItem("Create/Equipment")]
     static void DoIt()
     {
@@ -21,7 +18,7 @@ public class ScriptObjectCreator
     public static Equipment CreateEquipAsset()
     {
         var v =ScriptableObject.CreateInstance<DecorateBase>();
-        AssetDatabase.CreateAsset(v, pathBase+"EquipAsset/test.asset");
+        AssetDatabase.CreateAsset(v, m_Path.pDataEquip+"test.asset");
         AssetDatabase.Refresh();
         return v;
     }

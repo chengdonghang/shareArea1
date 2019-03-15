@@ -7,10 +7,11 @@ using OfficeOpenXml;
 
 public class ExcelLoader
 {
+    public static string mPath = "/shareArea1/Resource/Data/Excel/";
     [MenuItem("Excel/Equipment")]
     static void LoadEquip()
     {
-        using(FileStream f = new FileStream(Application.dataPath+ "/shareArea1/Resource/Excel/equip.xlsx",FileMode.Open,FileAccess.Read))
+        using(FileStream f = new FileStream(Application.dataPath+ mPath+"equip.xlsx",FileMode.Open,FileAccess.Read))
         {
             using(ExcelPackage pack = new ExcelPackage(f))
             {
@@ -21,7 +22,7 @@ public class ExcelLoader
                 while (sheet.Cells[i, 1].Text.Length!=0)
                 {
                     var itemID = sheet.Cells[i, 1].Text;
-                    var equip = AssetDatabase.LoadAssetAtPath<Equipment>(ScriptObjectCreator.pathBase + "EquipAsset/" + itemID + ".asset");
+                    var equip = AssetDatabase.LoadAssetAtPath<Equipment>(m_Path.pDataEquip + itemID + ".asset");
                     if (equip != null)
                     {
                         //如果该项已经在spawns里面出现，就不添加只修改，否则需要添加该项
@@ -60,7 +61,7 @@ public class ExcelLoader
                             if(value!=0)
                                 equip.spawns.Add(new Equipment.SpawnEquip((EquipType)(j - 3), value));
                         }
-                        SaveObjData(equip, equip.ID, "/EquipAsset/");
+                        SaveObjData(equip, equip.ID, m_Path.pDataEquip);
                     }
                     i++;
                 }
@@ -74,7 +75,7 @@ public class ExcelLoader
     [MenuItem("Excel/CreateSheet")]
     static void CreateSheet()
     {
-        FileInfo f = new FileInfo(Application.dataPath + "/shareArea1/Resource/Excel/equip.xlsx");
+        FileInfo f = new FileInfo(Application.dataPath + mPath+"equip.xlsx");
         ExcelPackage package = new ExcelPackage(f);
         var sheet = package.Workbook.Worksheets.Add("装备属性表");
         sheet.Cells[1, 1].Value = "ID";
@@ -98,7 +99,7 @@ public class ExcelLoader
     /// <param name="path">在Resource文件夹下相对路径名.</param>
     static void SaveObjData(ScriptableObject obj,string name,string path)
     {
-        AssetDatabase.CreateAsset(obj, ScriptObjectCreator.pathBase + path + name + ".asset");
+        AssetDatabase.CreateAsset(obj, path + name + ".asset");
         AssetDatabase.Refresh();
     }
 
