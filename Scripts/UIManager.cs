@@ -69,7 +69,7 @@ public class UIManager : MonoBehaviour
 
     private void PackageChanged(int row,int line,string id)
     {
-        var sprite = Resources.Load<Sprite>(m_Path.respPicEquip + id);
+        var sprite = Resources.Load<Sprite>(Path.respPicEquip + id);
         if (sprite == null) Debug.LogError("can not find");
         packageImage[row, line].sprite = sprite;
     }

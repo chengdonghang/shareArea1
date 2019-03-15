@@ -14,7 +14,7 @@ public class HeroManager : MonoBehaviour,ModelInterface
     public event Action<int, int, string> PackageChanged;
     public GameValuesSys valuesSys;
 
-    private Equipment[,] package = new Equipment[6, 8];
+    private Equipment[,] package = new Equipment[8, 8];
 
     void Awake()
     {
@@ -29,7 +29,7 @@ public class HeroManager : MonoBehaviour,ModelInterface
 
     public void SetPackage(int row, int line, string equipID)
     {
-        var s = Resources.Load<Equipment>(m_Path.respDataEquip+equipID+".asset");
+        var s = Resources.Load<Equipment>(Path.respDataEquip+equipID+".asset");
         if (s != null)
         {
             package[row, line] = s;
