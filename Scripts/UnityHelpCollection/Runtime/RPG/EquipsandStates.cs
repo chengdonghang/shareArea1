@@ -94,13 +94,13 @@ public static class Path
     public static string pDataEquip = pData + "Equip/";
     public static string pDataSkill = pData + "Skill/";
 
-    public static string resPathBase = "shareArea1/";
+    public static string resPathBase = "";
     public static string respPicture = resPathBase + "Source/Photo/";
     public static string respPicEquip = respPicture + "Equip/";
     public static string respPicSkill = respPicture + "Skill/";
     public static string respData = resPathBase + "Data/";
-    public static string respDataEquip = respPicture + "Equip/";
-    public static string respDataSkill = respPicture + "Skill/";
+    public static string respDataEquip = respData + "Equip/";
+    public static string respDataSkill = respData + "Skill/";
 }
 
 public class e_Health : IEquip
