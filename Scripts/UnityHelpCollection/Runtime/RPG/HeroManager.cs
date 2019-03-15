@@ -14,24 +14,42 @@ public class HeroManager : MonoBehaviour,ModelInterface
     public event Action<int, int, string> PackageChanged;
     public GameValuesSys valuesSys;
 
-    private Equipment[,] package = new Equipment[8, 8];
+    private Equipment[,] packages = new Equipment[8, 8];
+    private Dictionary<EquipmentType, Equipment> equips = new Dictionary<EquipmentType, Equipment>();
 
     void Awake()
     {
         valuesSys.HpChanged.AddListener(delegate (float value) { HpChanged(value); });
         valuesSys.MpChanged.AddListener(delegate (float value) { MpChanged(value); });
+
+        //初始化字典
+        foreach(EquipmentType v in Enum.GetValues(typeof(EquipmentType)))
+        {
+            equips[v] = null;
+        }
     }
 
-    public void SetEquip(int EquipType, string equipID)
+    public void SetEquip(EquipmentType EquipType, string equipID)
     {
-        throw new NotImplementedException();
+        if (equipID == "-1")
+        {
+            equips[EquipType] = null;
+            EquipChanged(EquipType, equipID);
+        }
+
+        var s = Resources.Load<Equipment>(Path.respDataEquip + equipID);
+        if (s != null)
+        {
+            equips[EquipType] = s;
+            EquipChanged(EquipType, equipID);
+        }
     }
 
     public void SetPackage(int row, int line, string equipID)
     {
         if (equipID == "-1")
         {
-            package[row, line] = null;
+            packages[row, line] = null;
             PackageChanged(row, line, equipID);
         }
 
@@ -40,7 +58,7 @@ public class HeroManager : MonoBehaviour,ModelInterface
         Debug.Log(s);
         if (s != null)
         {
-            package[row, line] = s;
+            packages[row, line] = s;
             PackageChanged(row, line, equipID);
         }
     }
