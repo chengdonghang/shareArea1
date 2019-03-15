@@ -13,7 +13,7 @@ public interface ModelInterface
     event Action<EquipmentType, string> EquipChanged;
     event Action<int, int, string> PackageChanged;
     void SetSkill(int slotNumber, string skillID);
-    void SetEquip(int EquipType, string equipID);
+    void SetEquip(EquipmentType EquipType, string equipID);
     void SetPackage(int row, int line, string equipID);
 }
 

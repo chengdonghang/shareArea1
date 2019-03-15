@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     public Text LevelNumber;
     private Image[] skillsImage = new Image[6];
     private Image[,] packageImage = new Image[8, 8];
+    private Dictionary<EquipmentType, Image> equips = new Dictionary<EquipmentType, Image>();
 
     public HeroManager model;
 
@@ -26,10 +27,9 @@ public class UIManager : MonoBehaviour
         model.MpChanged += MpChanged;
         model.ExperienceChanged += ExperienceChanged;
         model.LevelChanged += LevelChanged;
-
-
         model.SkillChanged += SkillChanged;
         model.PackageChanged += PackageChanged;
+        model.EquipChanged+=EquipChanged;
 
         ButtomPanel = GameObject.FindWithTag("buttomPanel");
         HeroPanel = GameObject.FindWithTag("heroPanel");
@@ -39,17 +39,37 @@ public class UIManager : MonoBehaviour
             skillsImage[i - 1] = ButtomPanel.transform.Find("skill" + i.ToString()).Find("Image").GetComponent<Image>();
             skillsImage[i - 1].sprite = null;
         }
+        var father1 = HeroPanel.transform.Find("物品界面").Find("装备");
+        #region 初始化装备字典
+        equips[EquipmentType.helm] = father1.transform.Find("头盔").GetComponent<Image>();
+        equips[EquipmentType.pants] = father1.transform.Find("裤子").GetComponent<Image>();
+        equips[EquipmentType.belt] = father1.transform.Find("腰带").GetComponent<Image>();
+        equips[EquipmentType.decorater] = father1.transform.Find("饰品1").GetComponent<Image>();
+        equips[EquipmentType.shoes] = father1.transform.Find("鞋子").GetComponent<Image>();
+        equips[EquipmentType.clothes] = father1.transform.Find("衣服").GetComponent<Image>();
+        equips[EquipmentType.weapon] = father1.transform.Find("武器1").GetComponent<Image>();
+        #endregion
 
-        var father = HeroPanel.transform.Find("物品界面").Find("背包");
+        var father2 = HeroPanel.transform.Find("物品界面").Find("背包");
         for(int i = 0;i<8;i++)
             for(int j = 0; j < 8; j++)
             {
                 Debug.Log("pack" + (i * 8 + (j + 1)).ToString());
-                var ch = father.Find("pack" + (i * 8 + (j + 1)).ToString());
+                var ch = father2.Find("pack" + (i * 8 + (j + 1)).ToString());
                 var pic = ch.Find("Image").GetComponent<Image>();
                 packageImage[i, j] = pic;
             }
     }
+
+
+    void EquipChanged(EquipmentType type, string id)
+    {
+        if (id == "-1") equips[type].sprite = null;
+        var sprite = Resources.Load<Sprite>(Path.respPicEquip + id);
+        if (sprite == null) Debug.LogError("can not find");
+        equips[type].sprite = sprite;
+    }
+
 
     private void SkillChanged(int arg1, string arg2)
     {

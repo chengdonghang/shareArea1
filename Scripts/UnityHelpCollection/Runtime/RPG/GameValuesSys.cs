@@ -17,6 +17,8 @@ public class GameValuesSys : MonoBehaviour {
 
     public Value1Changed HpChanged = new Value1Changed();
     public Value1Changed MpChanged = new Value1Changed();
+    public UnityEvent Critcaled = new UnityEvent();
+    public UnityEvent Dodged = new UnityEvent();
 
     public float physicalResistance = 1.0f;
     public float magicResistance = 1.0f;
@@ -34,32 +36,22 @@ public class GameValuesSys : MonoBehaviour {
 
     private WaitForSeconds restoreDelta = new WaitForSeconds(1);
 
-    void Awake()
+    private void Start()
     {
-        
+        Debug.Log("run");
+        StartCoroutine(Restore());
     }
 
     private IEnumerator Restore()
     {
-        RestoreValue(ref HP, hpRestoreSpeed, healthLimit);
-        RestoreValue(ref MP, mpRestoreSpeed, magicLimit);
-        yield return restoreDelta;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="value">当前值</param>
-    /// <param name="restore">回复值</param>
-    /// <param name="limit">上限值</param>
-    private void RestoreValue(ref int value,int restore,int limit)
-    {
-        if (value < limit)
+        while (true)
         {
-            if (value + restore <= limit) value += restore;
-            else value = limit;
+            yield return restoreDelta;
+            ChangeHP(hpRestoreSpeed);
+            ChangeMP(mpRestoreSpeed);
         }
     }
+
 
     void HpHasChanged()
     {
@@ -82,7 +74,7 @@ public class GameValuesSys : MonoBehaviour {
     /// <returns>返回false代表闪避成功</returns>
     public bool HurtByPhysical(int value)
     {
-        if (dodgeRate >= Random.value) return false;
+        if (dodgeRate >= Random.value) { Dodged.Invoke(); return false; }
         HP -= Mathf.FloorToInt(value * physicalResistance);
         HpHasChanged();
         return true;
@@ -118,6 +110,7 @@ public class GameValuesSys : MonoBehaviour {
     {
         if(CritRate >= Random.value)
         {
+            Critcaled.Invoke();
             return CritcalMult * attackValue;
         }
         return attackValue;
