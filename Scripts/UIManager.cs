@@ -22,13 +22,24 @@ public class UIManager : MonoBehaviour
         model.ExperienceChanged += ExperienceChanged;
         model.LevelChanged += LevelChanged;
 
-        for(int i = 1; i <= 6; i++)
+
+        model.SkillChanged += SkillChanged;
+        model.PackageChanged += PackageChanged;
+
+        for (int i = 1; i <= 6; i++)
         {
             skillsImage[i - 1] = transform.Find("skill" + i.ToString()).Find("Image").GetComponent<Image>();
             skillsImage[i - 1].sprite = null;
         }
-        model.SkillChanged += SkillChanged;
-        model.PackageChanged += PackageChanged;
+
+        var father = transform.Find("背包");
+        for(int i = 0;i<8;i++)
+            for(int j = 0; j < 8; j++)
+            {
+                var ch = father.Find("pack" + (i + 1) * 8 + (j + 1));
+                var pic = ch.Find("Image").GetComponent<Image>();
+                packageImage[i, j] = pic;
+            }
     }
 
     private void SkillChanged(int arg1, string arg2)
@@ -58,7 +69,9 @@ public class UIManager : MonoBehaviour
 
     private void PackageChanged(int row,int line,string id)
     {
-
+        var sprite = Resources.Load<Sprite>(m_Path.respPicEquip + id);
+        if (sprite == null) Debug.LogError("can not find");
+        packageImage[row, line].sprite = sprite;
     }
 
 }
