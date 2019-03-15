@@ -10,6 +10,7 @@ public class Test : MonoBehaviour
     {
         manager = GetComponent<HeroManager>();
         manager.valuesSys.HurtByPhysical(20);
+        manager.SetPackage(1, 1, "1");
     }
 
 }

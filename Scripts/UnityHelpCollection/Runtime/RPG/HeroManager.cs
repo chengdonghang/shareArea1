@@ -29,7 +29,15 @@ public class HeroManager : MonoBehaviour,ModelInterface
 
     public void SetPackage(int row, int line, string equipID)
     {
-        var s = Resources.Load<Equipment>(Path.respDataEquip+equipID+".asset");
+        if (equipID == "-1")
+        {
+            package[row, line] = null;
+            PackageChanged(row, line, equipID);
+        }
+
+        var s = Resources.Load<Equipment>(Path.respDataEquip+equipID);
+        Debug.Log(Path.respDataEquip + equipID );
+        Debug.Log(s);
         if (s != null)
         {
             package[row, line] = s;
