@@ -39,4 +39,20 @@ public class Equipment : ScriptableObject,IEquipment
         }
         return;
     }
+
+    public void Equip(AttributeSys sys1,GameValuesSys sys2)
+    {
+        foreach(var v in Equips)
+        {
+            v.Equip(sys1, sys2);
+        }
+    }
+
+    public void UnEquip(AttributeSys sys1, GameValuesSys sys2)
+    {
+        foreach (var v in Equips)
+        {
+            v.UnEquip(sys1, sys2);
+        }
+    }
 }

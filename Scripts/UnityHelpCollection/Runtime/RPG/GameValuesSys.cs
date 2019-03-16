@@ -15,10 +15,6 @@ public class GameValuesSys : MonoBehaviour {
     public int HP = 100;
     public int MP = 100;
 
-    public Value1Changed HpChanged = new Value1Changed();
-    public Value1Changed MpChanged = new Value1Changed();
-    public UnityEvent Critcaled = new UnityEvent();
-    public UnityEvent Dodged = new UnityEvent();
 
     public float physicalResistance = 1.0f;
     public float magicResistance = 1.0f;
@@ -35,6 +31,12 @@ public class GameValuesSys : MonoBehaviour {
     public int CritcalMult = 1;
 
     private WaitForSeconds restoreDelta = new WaitForSeconds(1);
+
+    public Value1Changed HpChanged = new Value1Changed();
+    public Value1Changed MpChanged = new Value1Changed();
+    [HideInInspector]public UnityEvent Critcaled = new UnityEvent();
+    [HideInInspector]public UnityEvent Dodged = new UnityEvent();
+
 
     private void Start()
     {

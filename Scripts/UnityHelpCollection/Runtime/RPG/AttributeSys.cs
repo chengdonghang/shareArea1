@@ -11,8 +11,13 @@ public class AttributeSys:MonoBehaviour
     public int intelligence { get; private set; }
     public int physique { get; private set; }
     public int lucky { get; private set; }
-    public List<float> implicatedValues = new List<float>(11);
+    public float[] implicatedValues = new float[11];
     private GameValuesSys valuesSys;
+
+    private void Awake()
+    {
+        for (int i = 0; i < implicatedValues.Length; i++) { implicatedValues[i]=1.0f; }
+    }
 
     void Start()
     {
