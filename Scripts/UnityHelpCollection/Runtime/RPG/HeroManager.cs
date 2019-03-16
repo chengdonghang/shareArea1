@@ -3,7 +3,8 @@ using UnityEditor;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroManager : MonoBehaviour,ModelInterface
+[RequireComponent(typeof(GameValuesSys),typeof(AttributeSys))]
+public class HeroManager : MonoBehaviour, ModelInterface
 {
     public event Action<float> HpChanged;
     public event Action<float> MpChanged;
@@ -13,17 +14,22 @@ public class HeroManager : MonoBehaviour,ModelInterface
     public event Action<EquipmentType, string> EquipChanged;
     public event Action<int, int, string> PackageChanged;
     public GameValuesSys valuesSys;
+    public AttributeSys attrSys;
 
     private Equipment[,] packages = new Equipment[8, 8];
     private Dictionary<EquipmentType, Equipment> equips = new Dictionary<EquipmentType, Equipment>();
 
+
     void Awake()
     {
+        valuesSys = GetComponent<GameValuesSys>();
+        attrSys = GetComponent<AttributeSys>();
+
         valuesSys.HpChanged.AddListener(delegate (float value) { HpChanged(value); });
         valuesSys.MpChanged.AddListener(delegate (float value) { MpChanged(value); });
 
         //初始化字典
-        foreach(EquipmentType v in Enum.GetValues(typeof(EquipmentType)))
+        foreach (EquipmentType v in Enum.GetValues(typeof(EquipmentType)))
         {
             equips[v] = null;
         }
@@ -31,16 +37,17 @@ public class HeroManager : MonoBehaviour,ModelInterface
 
     public void SetEquip(EquipmentType EquipType, string equipID)
     {
-        if (equipID == "-1")
+        if (equipID == "-1"&&equips[EquipType]!=null)
         {
+            equips[EquipType].UnEquip(attrSys,valuesSys);
             equips[EquipType] = null;
             EquipChanged(EquipType, equipID);
         }
-
         var s = Resources.Load<Equipment>(Path.respDataEquip + equipID);
         if (s != null)
         {
             equips[EquipType] = s;
+            equips[EquipType].Equip(attrSys, valuesSys);
             EquipChanged(EquipType, equipID);
         }
     }
@@ -53,11 +60,11 @@ public class HeroManager : MonoBehaviour,ModelInterface
             PackageChanged(row, line, equipID);
         }
 
-        var s = Resources.Load<Equipment>(Path.respDataEquip+equipID);
-        Debug.Log(Path.respDataEquip + equipID );
-        Debug.Log(s);
+        var s = Resources.Load<Equipment>(Path.respDataEquip + equipID);
+
         if (s != null)
         {
+            s.AddEquips();
             packages[row, line] = s;
             PackageChanged(row, line, equipID);
         }
@@ -65,7 +72,8 @@ public class HeroManager : MonoBehaviour,ModelInterface
 
     public void SetSkill(int slotNumber, string skillID)
     {
-        throw new NotImplementedException();
+        if (slotNumber < 0 || slotNumber > 5) { Debug.LogError("index error"); return; }
+        if (skillID == "-1") { }
     }
 
     
