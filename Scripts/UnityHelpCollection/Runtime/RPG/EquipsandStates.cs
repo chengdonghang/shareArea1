@@ -21,17 +21,24 @@ public interface IState
     void Exit(AttributeSys attributeSys, GameValuesSys valuesSys);
 }
 
-public enum EquipType
+public enum ValuesType
 {
     health,
     magic,
+    physicRes,
+    magicRes,
+    attackValue,
+    attackSpeed,
+    magicPower,
+    critcalRate,
+    dodgeRate,
+    hpRestoreSpeed,
+    mpRestoreSpeed,
     strength,
     agile,
     intellgence,
     lucky,
-    physique,
-    attack,
-    dodgeRate
+    physique
 }
 
 public enum EquipmentType
@@ -113,12 +120,12 @@ public class e_Health : IEquip
 
     public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
     {
-        valuesSys.healthLimit += value;
+        valuesSys.HealthLimit += value;
     }
 
     public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
     {
-        valuesSys.healthLimit -= value;
+        valuesSys.HealthLimit -= value;
     }
 }
 
@@ -132,12 +139,12 @@ public class e_Magic : IEquip
 
     public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
     {
-        valuesSys.magicLimit += value;
+        valuesSys.MagicLimit += value;
     }
 
     public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
     {
-        valuesSys.magicLimit -= value;
+        valuesSys.MagicLimit -= value;
     }
 }
 
@@ -246,36 +253,36 @@ public class e_Attack : IEquip
 
     public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
     {
-        valuesSys.attackValue += value;
+        valuesSys.AttackValue += value;
     }
 
     public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
     {
-        valuesSys.attackValue -= value;
+        valuesSys.AttackValue -= value;
     }
 }
 
 public class EquipmentsFactory
 {
-    public IEquip SpawnProduct(EquipType equipType,int value)
+    public IEquip SpawnProduct(ValuesType equipType,int value)
     {
         switch (equipType)
         {
-            case EquipType.health:
+            case ValuesType.health:
                 return new e_Health(value);
-            case EquipType.agile:
+            case ValuesType.agile:
                 return new e_Agile(value);
-            case EquipType.strength:
+            case ValuesType.strength:
                 return new e_Strength(value);
-            case EquipType.intellgence:
+            case ValuesType.intellgence:
                 return new e_Intelligence(value);
-            case EquipType.magic:
+            case ValuesType.magic:
                 return new e_Magic(value);
-            case EquipType.physique:
+            case ValuesType.physique:
                 return new e_Physicque(value);
-            case EquipType.lucky:
+            case ValuesType.lucky:
                 return new e_Lucky(value);
-            case EquipType.attack:
+            case ValuesType.attackValue:
                 return new e_Attack(value);
             default:
                 Debug.LogError("error");

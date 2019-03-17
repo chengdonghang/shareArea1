@@ -7998,6 +7998,7 @@ GameObject:
   - component: {fileID: 6976407540827057736}
   - component: {fileID: 6976407540827057739}
   - component: {fileID: 8573652143063414097}
+  - component: {fileID: 7546723724647733124}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -8081,7 +8082,7 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
@@ -8098,12 +8099,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2736e3f409e84604d9a2aebb1d8fb585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ButtomPanel: {fileID: 0}
+  HeroPanel: {fileID: 0}
   HP: {fileID: 6976407541640666798}
   MP: {fileID: 6976407540594021605}
   HeroImage: {fileID: 6976407541242107548}
   experience: {fileID: 0}
   LevelNumber: {fileID: 6976407540616018194}
   model: {fileID: 0}
+  control: {fileID: 7546723724647733124}
+--- !u!114 &7546723724647733124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6976407540827057738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cadeae4438a8566408f10bb7889cd1de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiManager: {fileID: 8573652143063414097}
 --- !u!1 &6976407540830084310
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,8 @@ public class HeroManager : MonoBehaviour, ModelInterface
     public event Action<float> ExperienceChanged;
     public event Action<EquipmentType, string> EquipChanged;
     public event Action<int, int, string> PackageChanged;
+    public event Action AttributeChanged;
+
     public GameValuesSys valuesSys;
     public AttributeSys attrSys;
 
@@ -49,6 +51,17 @@ public class HeroManager : MonoBehaviour, ModelInterface
             equips[EquipType] = s;
             equips[EquipType].Equip(attrSys, valuesSys);
             EquipChanged(EquipType, equipID);
+        }
+    }
+
+    public void NextFreeSlot(ref int row,ref int line)
+    {
+        for(int i = 0; i < packages.GetLength(0); i++)
+        {
+            for(int j = 0; j < packages.GetLength(1); j++)
+            {
+                if (packages[i, j] == null) { row = i; line = j; return; }
+            }
         }
     }
 
