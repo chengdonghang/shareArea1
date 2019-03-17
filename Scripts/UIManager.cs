@@ -14,8 +14,11 @@ public class UIManager : MonoBehaviour
     public Slider experience;
     public Text LevelNumber;
     private Image[] skillsImage = new Image[6];
+    private Button[] skillsBtn = new Button[6];
     private Image[,] packageImage = new Image[8, 8];
+    private Button[,] packageBtn = new Button[8, 8]; 
     private Dictionary<EquipmentType, Image> equips = new Dictionary<EquipmentType, Image>();
+    private Dictionary<EquipmentType, Button> equipsBtn = new Dictionary<EquipmentType, Button>();
 
     public HeroManager model;
 
@@ -36,8 +39,11 @@ public class UIManager : MonoBehaviour
 
         for (int i = 1; i <= 6; i++)
         {
-            skillsImage[i - 1] = ButtomPanel.transform.Find("skill" + i.ToString()).Find("Image").GetComponent<Image>();
+            var val = ButtomPanel.transform.Find("skill" + i.ToString());
+            skillsImage[i - 1] = val.Find("Image").GetComponent<Image>();
             skillsImage[i - 1].sprite = null;
+            skillsBtn[i - 1] = val.GetComponent<Button>();
+            
         }
         var father1 = HeroPanel.transform.Find("物品界面").Find("装备");
         #region 初始化装备字典
@@ -60,7 +66,6 @@ public class UIManager : MonoBehaviour
                 packageImage[i, j] = pic;
             }
     }
-
 
     void EquipChanged(EquipmentType type, string id)
     {
