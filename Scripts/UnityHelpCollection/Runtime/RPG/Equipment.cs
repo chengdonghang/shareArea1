@@ -21,9 +21,9 @@ public class Equipment : ScriptableObject,IEquipment
     [Serializable]
     public class SpawnEquip
     {
-        public EquipType equipType;
+        public ValuesType equipType;
         public int value;
-        public SpawnEquip(EquipType type,int value)
+        public SpawnEquip(ValuesType type,int value)
         {
             this.equipType = type;
             this.value = value;

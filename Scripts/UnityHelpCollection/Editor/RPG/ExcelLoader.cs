@@ -29,15 +29,15 @@ public class ExcelLoader
                         equip.ID = itemID;
                         equip.name = sheet.Cells[i, 2].Text;
                         equip.Name = sheet.Cells[i, 2].Text;
-                        Dictionary<EquipType, int> dic = new Dictionary<EquipType, int>();
+                        Dictionary<ValuesType, int> dic = new Dictionary<ValuesType, int>();
                         int k = 0;
                         foreach(var v in equip.spawns) { dic.Add(v.equipType, k++); }
-                        for(int j = 3; j < 3 + Enum.GetNames(typeof(EquipType)).Length; j++)
+                        for(int j = 3; j < 3 + Enum.GetNames(typeof(ValuesType)).Length; j++)
                         {
                             int value = int.Parse(sheet.Cells[i, j].Text);
                             if (value != 0)
                             {
-                                var key = (EquipType)(j - 3);
+                                var key = (ValuesType)(j - 3);
                                 if (dic.ContainsKey(key))
                                 {
                                     equip.spawns[dic[key]].value = value;
@@ -55,11 +55,11 @@ public class ExcelLoader
                         equip = CreateScriptableObj();
                         equip.ID = itemID;
                         equip.name = sheet.Cells[i, 2].Text;
-                        for (int j = 3; j < 3 + Enum.GetNames(typeof(EquipType)).Length; j++)
+                        for (int j = 3; j < 3 + Enum.GetNames(typeof(ValuesType)).Length; j++)
                         {
                             int value = int.Parse(sheet.Cells[i, j].Text);
                             if(value!=0)
-                                equip.spawns.Add(new Equipment.SpawnEquip((EquipType)(j - 3), value));
+                                equip.spawns.Add(new Equipment.SpawnEquip((ValuesType)(j - 3), value));
                         }
                         SaveObjData(equip, equip.ID, m_Path.pDataEquip);
                     }
@@ -81,7 +81,7 @@ public class ExcelLoader
         sheet.Cells[1, 1].Value = "ID";
         sheet.Cells[1, 2].Value = "Name";
         int i = 3;
-        foreach(var s in Enum.GetNames(typeof(EquipType)))
+        foreach(var s in Enum.GetNames(typeof(ValuesType)))
             sheet.Cells[1, i++].Value = s;
         package.Save();  
     }

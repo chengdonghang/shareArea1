@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,7 +7,9 @@ public class Value1Changed : UnityEvent<float> { }
 
 public class GameValuesSys : MonoBehaviour {
     public int ID { get; set; }
+    public int HealthLimit { get { return healthLimit; } set { healthLimit = value; valueChanged(); } }
     public int healthLimit = 100;
+    public int MagicLimit { get { return magicLimit; } set { magicLimit = value; valueChanged(); } }
     public int magicLimit = 100;
     /// <summary>
     /// 当前生命魔法值
@@ -15,18 +17,26 @@ public class GameValuesSys : MonoBehaviour {
     public int HP = 100;
     public int MP = 100;
 
-
+    public float PhysicalResistance { get { return physicalResistance; } set { physicalResistance = value; valueChanged(); } }
     public float physicalResistance = 1.0f;
+    public float MagicResistance { get { return magicResistance; } set { magicResistance = value; valueChanged(); } }
     public float magicResistance = 1.0f;
+    public int AttackValue { get { return attackValue; } set { attackValue = value; valueChanged(); } }
     public int attackValue = 10;
+    public int AttackSpeed { get { return attackSpeed; } set { attackSpeed = value; valueChanged(); } }
     public int attackSpeed = 10;
     /// <summary>
     /// 法术强度
     /// </summary>
     public float spellPower = 1.0f;
-    public float CritRate = 1.0f;
+    public float SpellPower { get { return spellPower; } set { spellPower = value; valueChanged(); } }
+    public float CritRate { get { return critRate; } set { critRate = value; valueChanged(); } }
+    public float critRate = 1.0f;
+    public float DodgeRate { get { return dodgeRate; } set { dodgeRate = value; valueChanged(); } }
     public float dodgeRate = 0.0f;
+    public int HpRestoreSpeed { get { return hpRestoreSpeed; } set { hpRestoreSpeed = value; valueChanged(); } }
     public int hpRestoreSpeed = 1;
+    public int MpRestoreSpeed { get { return MpRestoreSpeed; } set { MpRestoreSpeed = value; valueChanged(); } }
     public int mpRestoreSpeed = 1;
     public int CritcalMult = 1;
 
@@ -36,7 +46,7 @@ public class GameValuesSys : MonoBehaviour {
     public Value1Changed MpChanged = new Value1Changed();
     [HideInInspector]public UnityEvent Critcaled = new UnityEvent();
     [HideInInspector]public UnityEvent Dodged = new UnityEvent();
-
+    public Action valueChanged;
 
     private void Start()
     {
@@ -76,7 +86,7 @@ public class GameValuesSys : MonoBehaviour {
     /// <returns>返回false代表闪避成功</returns>
     public bool HurtByPhysical(int value)
     {
-        if (dodgeRate >= Random.value) { Dodged.Invoke(); return false; }
+        if (dodgeRate >= UnityEngine.Random.value) { Dodged.Invoke(); return false; }
         HP -= Mathf.FloorToInt(value * physicalResistance);
         HpHasChanged();
         return true;
@@ -110,7 +120,7 @@ public class GameValuesSys : MonoBehaviour {
 
     public int givePhyDamage()
     {
-        if(CritRate >= Random.value)
+        if(critRate >= UnityEngine.Random.value)
         {
             Critcaled.Invoke();
             return CritcalMult * attackValue;

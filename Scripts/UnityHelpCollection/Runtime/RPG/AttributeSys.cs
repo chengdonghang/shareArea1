@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(GameValuesSys))]
 public class AttributeSys:MonoBehaviour
@@ -13,6 +14,7 @@ public class AttributeSys:MonoBehaviour
     public int lucky { get; private set; }
     public float[] implicatedValues = new float[11];
     private GameValuesSys valuesSys;
+    public Action valueChanged;
 
     private void Awake()
     {
@@ -28,6 +30,7 @@ public class AttributeSys:MonoBehaviour
     {
         strength += value;
         valuesSys.attackValue += (int)(value * implicatedValues[0]);
+        valueChanged();
     }
 
     public void AddAgile(int value)

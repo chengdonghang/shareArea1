@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using tabType = UIController.SwitchTab;
 
 public class UIManager : MonoBehaviour
 {
@@ -16,12 +17,15 @@ public class UIManager : MonoBehaviour
     private Image[] skillsImage = new Image[6];
     private Button[] skillsBtn = new Button[6];
     private Image[,] packageImage = new Image[8, 8];
-    private Button[,] packageBtn = new Button[8, 8]; 
+    private Button[,] packageBtn = new Button[8, 8];
+    private Button heroAvatar;
     private Dictionary<EquipmentType, Image> equips = new Dictionary<EquipmentType, Image>();
     private Dictionary<EquipmentType, Button> equipsBtn = new Dictionary<EquipmentType, Button>();
+    public Dictionary<tabType, GameObject> tabPages = new Dictionary<tabType, GameObject>();
+
 
     public HeroManager model;
-
+    public UIController control;
 
 
     void Awake()
@@ -43,7 +47,7 @@ public class UIManager : MonoBehaviour
             skillsImage[i - 1] = val.Find("Image").GetComponent<Image>();
             skillsImage[i - 1].sprite = null;
             skillsBtn[i - 1] = val.GetComponent<Button>();
-            
+
         }
         var father1 = HeroPanel.transform.Find("物品界面").Find("装备");
         #region 初始化装备字典
@@ -65,6 +69,38 @@ public class UIManager : MonoBehaviour
                 var pic = ch.Find("Image").GetComponent<Image>();
                 packageImage[i, j] = pic;
             }
+
+        #region 初始化页面物体
+        tabPages[tabType.attribute] = HeroPanel.transform.Find("属性界面").gameObject;
+        tabPages[tabType.mission] = HeroPanel.transform.Find("任务界面").gameObject;
+        tabPages[tabType.package] = HeroPanel.transform.Find("物品界面").gameObject;
+        tabPages[tabType.skill] = HeroPanel.transform.Find("技能界面").gameObject;
+        #endregion
+
+        #region 注册按钮
+        Button[] btns = new Button[5];
+        btns[0] = HeroPanel.transform.Find("属性按钮").GetComponent<Button>();
+        btns[1] = HeroPanel.transform.Find("物品按钮").GetComponent<Button>();
+        btns[2] = HeroPanel.transform.Find("技能按钮").GetComponent<Button>();
+        btns[3] = HeroPanel.transform.Find("任务按钮").GetComponent<Button>();
+        btns[4] = HeroPanel.transform.Find("关闭按钮").GetComponent<Button>();
+        foreach(var btn in btns)
+        {
+            btn.onClick.AddListener(delegate()
+            {
+                control.TabBtnClick(btn);
+            });
+        }
+        #endregion
+
+        heroAvatar = ButtomPanel.transform.Find("人物头像").GetComponent<Button>();
+        heroAvatar.onClick.AddListener(delegate()
+        {
+            Debug.Log("人物头像点击");
+            control.TabBtnClick(heroAvatar);
+        });
+        HeroPanel.SetActive(false);
+        foreach(var v in tabPages.Values) { v.SetActive(false); }
     }
 
     void EquipChanged(EquipmentType type, string id)
