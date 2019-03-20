@@ -47,10 +47,14 @@ public class UIManager : MonoBehaviour
             skillsImage[i - 1] = val.Find("Image").GetComponent<Image>();
             skillsImage[i - 1].sprite = null;
             skillsBtn[i - 1] = val.GetComponent<Button>();
-
         }
-        var father1 = HeroPanel.transform.Find("物品界面").Find("装备");
+
+        #region 初始化属性界面
+        model.valuesSys.valueChanged += attrValueChanged;
+        #endregion
+
         #region 初始化装备字典
+        var father1 = HeroPanel.transform.Find("物品界面").Find("装备");
         equips[EquipmentType.helm] = father1.transform.Find("头盔").GetComponent<Image>();
         equips[EquipmentType.pants] = father1.transform.Find("裤子").GetComponent<Image>();
         equips[EquipmentType.belt] = father1.transform.Find("腰带").GetComponent<Image>();
@@ -60,6 +64,7 @@ public class UIManager : MonoBehaviour
         equips[EquipmentType.weapon] = father1.transform.Find("武器1").GetComponent<Image>();
         #endregion
 
+        #region 初始化背包
         var father2 = HeroPanel.transform.Find("物品界面").Find("背包");
         for(int i = 0;i<8;i++)
             for(int j = 0; j < 8; j++)
@@ -69,6 +74,7 @@ public class UIManager : MonoBehaviour
                 var pic = ch.Find("Image").GetComponent<Image>();
                 packageImage[i, j] = pic;
             }
+        #endregion
 
         #region 初始化页面物体
         tabPages[tabType.attribute] = HeroPanel.transform.Find("属性界面").gameObject;
@@ -77,7 +83,7 @@ public class UIManager : MonoBehaviour
         tabPages[tabType.skill] = HeroPanel.transform.Find("技能界面").gameObject;
         #endregion
 
-        #region 注册按钮
+        #region 注册页面切换按钮
         Button[] btns = new Button[5];
         btns[0] = HeroPanel.transform.Find("属性按钮").GetComponent<Button>();
         btns[1] = HeroPanel.transform.Find("物品按钮").GetComponent<Button>();
@@ -93,6 +99,7 @@ public class UIManager : MonoBehaviour
         }
         #endregion
 
+        #region 注册人物头像，初始化页面
         heroAvatar = ButtomPanel.transform.Find("人物头像").GetComponent<Button>();
         heroAvatar.onClick.AddListener(delegate()
         {
@@ -101,6 +108,12 @@ public class UIManager : MonoBehaviour
         });
         HeroPanel.SetActive(false);
         foreach(var v in tabPages.Values) { v.SetActive(false); }
+        #endregion
+    }
+
+    private void attrValueChanged()
+    {
+        throw new System.NotImplementedException();
     }
 
     void EquipChanged(EquipmentType type, string id)

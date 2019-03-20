@@ -3,7 +3,7 @@
 
 public static class m_Path
 {
-    public static string pathBase = "Assets/shareArea1/Resource/";
+    public static string pathBase = "Assets/shareArea1/Resources/";
     public static string pPicture = pathBase + "Source/Photo/";
     public static string pPicEquip = pPicture + "Equip/";
     public static string pPicSkill = pPicture + "Skill/";

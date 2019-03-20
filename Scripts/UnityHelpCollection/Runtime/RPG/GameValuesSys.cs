@@ -46,7 +46,7 @@ public class GameValuesSys : MonoBehaviour {
     public Value1Changed MpChanged = new Value1Changed();
     [HideInInspector]public UnityEvent Critcaled = new UnityEvent();
     [HideInInspector]public UnityEvent Dodged = new UnityEvent();
-    public Action valueChanged;
+    public event Action valueChanged;
 
     private void Start()
     {
