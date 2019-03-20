@@ -7,7 +7,7 @@ using OfficeOpenXml;
 
 public class ExcelLoader
 {
-    public static string mPath = "/shareArea1/Resource/Data/Excel/";
+    public static string mPath = "/shareArea1/Resources/Data/Excel/";
     [MenuItem("Excel/Equipment")]
     static void LoadEquip()
     {
@@ -55,8 +55,10 @@ public class ExcelLoader
                         equip = CreateScriptableObj();
                         equip.ID = itemID;
                         equip.name = sheet.Cells[i, 2].Text;
+                        equip.Name = sheet.Cells[i, 2].Text;
                         for (int j = 3; j < 3 + Enum.GetNames(typeof(ValuesType)).Length; j++)
                         {
+                            Debug.Log(sheet.Cells[i, j].Text);
                             int value = int.Parse(sheet.Cells[i, j].Text);
                             if(value!=0)
                                 equip.spawns.Add(new Equipment.SpawnEquip((ValuesType)(j - 3), value));
