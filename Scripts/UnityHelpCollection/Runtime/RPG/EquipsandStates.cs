@@ -21,6 +21,9 @@ public interface IState
     void Exit(AttributeSys attributeSys, GameValuesSys valuesSys);
 }
 
+/// <summary>
+/// 属性类型
+/// </summary>
 public enum ValuesType
 {
     health,
@@ -41,6 +44,9 @@ public enum ValuesType
     physique
 }
 
+/// <summary>
+/// 装备类型
+/// </summary>
 public enum EquipmentType
 {
     weapon,

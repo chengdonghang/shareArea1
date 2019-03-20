@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     private Dictionary<EquipmentType, Image> equips = new Dictionary<EquipmentType, Image>();
     private Dictionary<EquipmentType, Button> equipsBtn = new Dictionary<EquipmentType, Button>();
     public Dictionary<tabType, GameObject> tabPages = new Dictionary<tabType, GameObject>();
-
+    public Dictionary<ValuesType, Text> valuesText = new Dictionary<ValuesType, Text>();
 
     public HeroManager model;
     public UIController control;
@@ -50,7 +50,18 @@ public class UIManager : MonoBehaviour
         }
 
         #region 初始化属性界面
+        var father0 = HeroPanel.transform.Find("属性界面");
         model.valuesSys.valueChanged += attrValueChanged;
+        valuesText[ValuesType.attackValue] = father0.transform.Find("物理伤害数值").GetComponent<Text>();
+        valuesText[ValuesType.health] = father0.transform.Find("生命上限数值").GetComponent<Text>();
+        valuesText[ValuesType.magic] = father0.transform.Find("魔法上限数值").GetComponent<Text>();
+        valuesText[ValuesType.magicPower] = father0.transform.Find("法术强度数值").GetComponent<Text>();
+        valuesText[ValuesType.magicRes] = father0.transform.Find("法术抗性数值").GetComponent<Text>();
+        valuesText[ValuesType.mpRestoreSpeed] = father0.transform.Find("魔法回复数值").GetComponent<Text>();
+        valuesText[ValuesType.physicRes] = father0.transform.Find("物理抗性数值").GetComponent<Text>();
+        valuesText[ValuesType.hpRestoreSpeed] = father0.transform.Find("生命回复数值").GetComponent<Text>();
+        valuesText[ValuesType.dodgeRate] = father0.transform.Find("闪避率数值").GetComponent<Text>();
+        valuesText[ValuesType.critcalRate] = father0.transform.Find("暴击率数值").GetComponent<Text>();
         #endregion
 
         #region 初始化装备字典
@@ -113,7 +124,7 @@ public class UIManager : MonoBehaviour
 
     private void attrValueChanged()
     {
-        throw new System.NotImplementedException();
+        valuesText[ValuesType.attackValue].text = model.valuesSys.AttackValue.ToString();
     }
 
     void EquipChanged(EquipmentType type, string id)
