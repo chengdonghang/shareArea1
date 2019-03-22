@@ -18,13 +18,11 @@ public class AttributeSys:MonoBehaviour
 
     private void Awake()
     {
+        valuesSys = GetComponent<GameValuesSys>();
         for (int i = 0; i < implicatedValues.Length; i++) { implicatedValues[i]=1.0f; }
     }
 
-    void Start()
-    {
-        valuesSys = GetComponent<GameValuesSys>();
-    }
+
 
     public void AddStrength(int value)
     {

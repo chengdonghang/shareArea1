@@ -32,7 +32,7 @@ public enum ValuesType
     magicRes,
     attackValue,
     attackSpeed,
-    magicPower,
+    spellPower,
     critcalRate,
     dodgeRate,
     hpRestoreSpeed,
@@ -249,10 +249,10 @@ public class e_Lucky : IEquip
     }
 }
 
-public class e_Attack : IEquip
+public class e_AttackValue : IEquip
 {
     private int value;
-    public e_Attack(int value)
+    public e_AttackValue(int value)
     {
         this.value = value;
     }
@@ -267,6 +267,24 @@ public class e_Attack : IEquip
         valuesSys.AttackValue -= value;
     }
 }
+public class e_AttackSpeed : IEquip
+{
+    private int value;
+    public e_AttackSpeed(int value)
+    {
+        this.value = value;
+    }
+
+    public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.attackSpeed += value;
+    }
+
+    public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.attackSpeed -= value;
+    }
+}
 
 public class EquipmentsFactory
 {
@@ -276,20 +294,22 @@ public class EquipmentsFactory
         {
             case ValuesType.health:
                 return new e_Health(value);
+            case ValuesType.magic:
+                return new e_Magic(value);
             case ValuesType.agile:
                 return new e_Agile(value);
             case ValuesType.strength:
                 return new e_Strength(value);
             case ValuesType.intellgence:
                 return new e_Intelligence(value);
-            case ValuesType.magic:
-                return new e_Magic(value);
             case ValuesType.physique:
                 return new e_Physicque(value);
             case ValuesType.lucky:
                 return new e_Lucky(value);
             case ValuesType.attackValue:
-                return new e_Attack(value);
+                return new e_AttackValue(value);
+            case ValuesType.attackSpeed:
+                return new e_A
             default:
                 Debug.LogError("error");
                 return null;

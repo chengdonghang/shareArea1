@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(GameValuesSys),typeof(AttributeSys))]
+[RequireComponent(typeof(GameValuesSys), typeof(AttributeSys))]
 public class HeroManager : MonoBehaviour, ModelInterface
 {
     public event Action<float> HpChanged;
@@ -27,14 +27,17 @@ public class HeroManager : MonoBehaviour, ModelInterface
         valuesSys = GetComponent<GameValuesSys>();
         attrSys = GetComponent<AttributeSys>();
 
-        valuesSys.HpChanged.AddListener(delegate (float value) { HpChanged(value); });
-        valuesSys.MpChanged.AddListener(delegate (float value) { MpChanged(value); });
-
         //初始化字典
         foreach (EquipmentType v in Enum.GetValues(typeof(EquipmentType)))
         {
             equips[v] = null;
         }
+    }
+
+    void Start()
+    {
+        valuesSys.HpChanged.AddListener(delegate (float value) { HpChanged(value); });
+        valuesSys.MpChanged.AddListener(delegate (float value) { MpChanged(value); });
     }
 
     public void SetEquip(EquipmentType EquipType, string equipID)

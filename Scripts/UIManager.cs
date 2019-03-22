@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     public UIController control;
 
 
-    void Awake()
+    void Start()
     {
         model.HpChanged += HpChanged;
         model.MpChanged += MpChanged;
@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
         valuesText[ValuesType.attackValue] = father0.transform.Find("物理伤害数值").GetComponent<Text>();
         valuesText[ValuesType.health] = father0.transform.Find("生命上限数值").GetComponent<Text>();
         valuesText[ValuesType.magic] = father0.transform.Find("魔法上限数值").GetComponent<Text>();
-        valuesText[ValuesType.magicPower] = father0.transform.Find("法术强度数值").GetComponent<Text>();
+        valuesText[ValuesType.spellPower] = father0.transform.Find("法术强度数值").GetComponent<Text>();
         valuesText[ValuesType.magicRes] = father0.transform.Find("法术抗性数值").GetComponent<Text>();
         valuesText[ValuesType.mpRestoreSpeed] = father0.transform.Find("魔法回复数值").GetComponent<Text>();
         valuesText[ValuesType.physicRes] = father0.transform.Find("物理抗性数值").GetComponent<Text>();
