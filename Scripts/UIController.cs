@@ -6,17 +6,10 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour,ControlInterface
 {
     private bool HeroPanelIsOn = false;
-    public enum SwitchTab
-    {
-        attribute,
-        package,
-        mission,
-        skill
-    }
     SwitchTab nowTab = SwitchTab.attribute;
 
     public UIManager uiManager;
-    public ModelInterface model;
+    public HeroManager model;
 
     private void SwitchTo(SwitchTab tab)
     {
@@ -74,11 +67,49 @@ public class UIController : MonoBehaviour,ControlInterface
 
     public void PackageBtnClick(Button button, int row, int line)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("row" + row + "line" + line);
+        var e = model.GetPackage(row, line);
+        if (e)
+        {
+            var nowEquip = model.GetEquips(e.equipmentType);
+            if (nowEquip) 
+            { 
+                model.SetEquip(e.equipmentType, e.ID); 
+                model.SetPackage(row, line, nowEquip.ID); 
+            }
+            else
+            {
+                model.SetEquip(e.equipmentType, e.ID);
+                model.SetPackage(row, line, "-1");
+            }
+        }
     }
 
     public void EquipBtnClick(Button button, EquipmentType type)
     {
-        throw new System.NotImplementedException();
+        var e = model.GetEquips(type);
+        if (e)
+        {
+            int row = -1, line = -1;
+            model.NextFreeSlot(ref row, ref line);
+            model.SetEquip(type, "-1");
+            model.SetPackage(row, line, e.ID);
+        }
+    }
+
+    public void AttributeBtnClick(ValuesType type,bool isPlus)
+    {
+        if (isPlus)
+        {
+            if (model.AddAttribtePoint(type))
+            { uiManager.attrPointText.text = model.LeftAttrPoint.ToString(); }
+            return;
+        }
+        else
+        {
+            if (model.MinusAttribtePoint(type))
+            { uiManager.attrPointText.text = model.LeftAttrPoint.ToString(); }
+            return;
+        }
     }
 }

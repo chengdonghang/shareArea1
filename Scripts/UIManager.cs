@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using tabType = UIController.SwitchTab;
+using tabType = SwitchTab;
 
 public class UIManager : MonoBehaviour
 {
@@ -18,13 +18,15 @@ public class UIManager : MonoBehaviour
     private Button[] skillsBtn = new Button[6];
     private Image[,] packageImage = new Image[8, 8];
     private Button[,] packageBtn = new Button[8, 8];
+    private Dictionary<Button, Point> packageDic = new Dictionary<Button, Point>();
+    private class Point { public readonly int _x; public readonly int _y; public Point(int x, int y) { _x = x; _y = y; } }
     private Button heroAvatar;
     private Dictionary<EquipmentType, Image> equips = new Dictionary<EquipmentType, Image>();
-    private Dictionary<Button, EquipmentType> diffEquipsBtn = new Dictionary<Button, EquipmentType>();
     private Dictionary<EquipmentType, Button> equipsBtn = new Dictionary<EquipmentType, Button>();
     public Dictionary<tabType, GameObject> tabPages = new Dictionary<tabType, GameObject>();
     public Dictionary<ValuesType, Text> valuesText = new Dictionary<ValuesType, Text>();
-    public Dictionary<Button, ValuesType> valuesBtn = new Dictionary<Button, ValuesType>();
+    public Dictionary<Button, ValuesType> valuesBtnPlus = new Dictionary<Button, ValuesType>();
+    public Dictionary<Button, ValuesType> valuesBtnMinus = new Dictionary<Button, ValuesType>();
     public Text attrPointText;
 
     public HeroManager model;
@@ -44,6 +46,7 @@ public class UIManager : MonoBehaviour
         ButtomPanel = transform.Find("底部面板").gameObject;
         HeroPanel = transform.Find("人物面板").gameObject;
 
+        #region 初始化技能面板
         for (int i = 1; i <= 6; i++)
         {
             var val = ButtomPanel.transform.Find("skill" + i.ToString());
@@ -51,6 +54,7 @@ public class UIManager : MonoBehaviour
             skillsImage[i - 1].sprite = null;
             skillsBtn[i - 1] = val.GetComponent<Button>();
         }
+        #endregion
 
         #region 初始化属性界面
         var father0 = HeroPanel.transform.Find("属性界面");
@@ -76,14 +80,26 @@ public class UIManager : MonoBehaviour
         attrPointText.text = model.LeftAttrPoint.ToString();
 
         #region 注册加点按钮
-        valuesBtn[father0.transform.Find("力量加点").GetComponent<Button>()] = ValuesType.strength;
-        valuesBtn[father0.transform.Find("敏捷加点").GetComponent<Button>()] = ValuesType.agile;
-        valuesBtn[father0.transform.Find("智力加点").GetComponent<Button>()] = ValuesType.intellgence;
-        valuesBtn[father0.transform.Find("体质加点").GetComponent<Button>()] = ValuesType.physique;
-        valuesBtn[father0.transform.Find("幸运加点").GetComponent<Button>()] = ValuesType.lucky;
-        foreach(var v in valuesBtn.Keys)
+        valuesBtnPlus[father0.transform.Find("力量加点").GetComponent<Button>()] = ValuesType.strength;
+        valuesBtnPlus[father0.transform.Find("敏捷加点").GetComponent<Button>()] = ValuesType.agile;
+        valuesBtnPlus[father0.transform.Find("智力加点").GetComponent<Button>()] = ValuesType.intellgence;
+        valuesBtnPlus[father0.transform.Find("体质加点").GetComponent<Button>()] = ValuesType.physique;
+        valuesBtnPlus[father0.transform.Find("幸运加点").GetComponent<Button>()] = ValuesType.lucky;
+        foreach(var v in valuesBtnPlus.Keys)
         {
-            v.onClick.AddListener(delegate () { if (model.AddAttribtePoint(valuesBtn[v])) { attrPointText.text = model.LeftAttrPoint.ToString(); } });
+            v.onClick.AddListener(delegate () { control.AttributeBtnClick(valuesBtnPlus[v],true); });
+        }
+        #endregion
+
+        #region 注册减点按钮
+        valuesBtnMinus[father0.transform.Find("力量减点").GetComponent<Button>()] = ValuesType.strength;
+        valuesBtnMinus[father0.transform.Find("敏捷减点").GetComponent<Button>()] = ValuesType.agile;
+        valuesBtnMinus[father0.transform.Find("智力减点").GetComponent<Button>()] = ValuesType.intellgence;
+        valuesBtnMinus[father0.transform.Find("体质减点").GetComponent<Button>()] = ValuesType.physique;
+        valuesBtnMinus[father0.transform.Find("幸运减点").GetComponent<Button>()] = ValuesType.lucky;
+        foreach (var v in valuesBtnMinus.Keys)
+        {
+            v.onClick.AddListener(delegate () { control.AttributeBtnClick(valuesBtnMinus[v],false); });
         }
         #endregion
 
@@ -91,14 +107,29 @@ public class UIManager : MonoBehaviour
 
         #region 初始化装备字典
         var father1 = HeroPanel.transform.Find("物品界面").Find("装备");
-        equips[EquipmentType.helm] = father1.transform.Find("头盔").GetComponent<Image>();
-        equips[EquipmentType.pants] = father1.transform.Find("裤子").GetComponent<Image>();
-        equips[EquipmentType.belt] = father1.transform.Find("腰带").GetComponent<Image>();
-        equips[EquipmentType.decorater] = father1.transform.Find("饰品1").GetComponent<Image>();
-        equips[EquipmentType.shoes] = father1.transform.Find("鞋子").GetComponent<Image>();
-        equips[EquipmentType.clothes] = father1.transform.Find("衣服").GetComponent<Image>();
-        equips[EquipmentType.weapon] = father1.transform.Find("武器1").GetComponent<Image>();
-        foreach(var pairs in equips.)
+        equips[EquipmentType.helm] = father1.transform.Find("头盔").Find("Image").GetComponent<Image>();
+        equips[EquipmentType.pants] = father1.transform.Find("裤子").Find("Image").GetComponent<Image>();
+        equips[EquipmentType.belt] = father1.transform.Find("腰带").Find("Image").GetComponent<Image>();
+        equips[EquipmentType.decorater] = father1.transform.Find("饰品1").Find("Image").GetComponent<Image>();
+        equips[EquipmentType.shoes] = father1.transform.Find("鞋子").Find("Image").GetComponent<Image>();
+        equips[EquipmentType.clothes] = father1.transform.Find("衣服").Find("Image").GetComponent<Image>();
+        equips[EquipmentType.weapon] = father1.transform.Find("武器1").Find("Image").GetComponent<Image>();
+        #region 初始化装备按钮
+        equipsBtn[EquipmentType.helm] = father1.transform.Find("头盔").GetComponent<Button>();
+        equipsBtn[EquipmentType.pants] = father1.transform.Find("裤子").GetComponent<Button>();
+        equipsBtn[EquipmentType.belt] = father1.transform.Find("腰带").GetComponent<Button>();
+        equipsBtn[EquipmentType.decorater] = father1.transform.Find("饰品1").GetComponent<Button>();
+        equipsBtn[EquipmentType.shoes] = father1.transform.Find("鞋子").GetComponent<Button>();
+        equipsBtn[EquipmentType.clothes] = father1.transform.Find("衣服").GetComponent<Button>();
+        equipsBtn[EquipmentType.weapon] = father1.transform.Find("武器1").GetComponent<Button>();
+        foreach(var pair in equipsBtn)
+        {
+            pair.Value.onClick.AddListener(delegate
+            {
+                control.EquipBtnClick(pair.Value, pair.Key);
+            });
+        }
+        #endregion
         #endregion
 
         #region 初始化背包
@@ -108,7 +139,8 @@ public class UIManager : MonoBehaviour
             {
                 var ch = father2.Find("pack" + (i * 8 + (j + 1)).ToString());
                 var btn = ch.GetComponent<Button>();
-                btn.onClick.AddListener(delegate () { control.PackageBtnClick(btn, i, j); });
+                packageDic[btn] = new Point(i, j);
+                btn.onClick.AddListener(delegate () { control.PackageBtnClick(btn,packageDic[btn]._x,packageDic[btn]._y); });
                 var pic = ch.Find("Image").GetComponent<Image>();
                 packageImage[i, j] = pic;
             }
@@ -173,7 +205,7 @@ public class UIManager : MonoBehaviour
 
     void EquipChanged(EquipmentType type, string id)
     {
-        if (id == "-1") equips[type].sprite = null;
+        if (id == "-1") { equips[type].sprite = null; return; }
         var sprite = Resources.Load<Sprite>(Path.respPicEquip + id);
         if (sprite == null) Debug.LogError("can not find");
         equips[type].sprite = sprite;
@@ -207,7 +239,11 @@ public class UIManager : MonoBehaviour
 
     private void PackageChanged(int row,int line,string id)
     {
-        if (id == "-1") packageImage[row, line].sprite = null;
+        if (id == "-1")
+        {
+            packageImage[row, line].sprite = null;
+            return;
+        }
         var sprite = Resources.Load<Sprite>(Path.respPicEquip + id);
         if (sprite == null) Debug.LogError("can not find");
         packageImage[row, line].sprite = sprite;

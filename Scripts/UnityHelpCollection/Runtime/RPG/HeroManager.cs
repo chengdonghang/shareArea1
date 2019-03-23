@@ -22,6 +22,7 @@ public class HeroManager : MonoBehaviour, ModelInterface
     private Dictionary<EquipmentType, Equipment> equips = new Dictionary<EquipmentType, Equipment>();
 
     private float expPoint = 0.0f;
+    public Dictionary<ValuesType, int> addAttrPointDic = new Dictionary<ValuesType, int>();
     private int leftAttrPoint = 10; //人物属性点
     public int LeftAttrPoint { get { return leftAttrPoint; } }
 
@@ -30,6 +31,11 @@ public class HeroManager : MonoBehaviour, ModelInterface
         valuesSys = GetComponent<GameValuesSys>();
         attrSys = GetComponent<AttributeSys>();
 
+        addAttrPointDic[ValuesType.strength] = 0;
+        addAttrPointDic[ValuesType.agile] = 0;
+        addAttrPointDic[ValuesType.intellgence] = 0;
+        addAttrPointDic[ValuesType.lucky] = 0;
+        addAttrPointDic[ValuesType.physique] = 0;
         //初始化字典
         foreach (EquipmentType v in Enum.GetValues(typeof(EquipmentType)))
         {
@@ -43,21 +49,51 @@ public class HeroManager : MonoBehaviour, ModelInterface
         valuesSys.MpChanged.AddListener(delegate (float value) { MpChanged(value); });
     }
 
-    public void SetEquip(EquipmentType EquipType, string equipID)
+    /// <summary>
+    /// 设置装备栏
+    /// </summary>
+    /// <returns>换掉物品的ID</returns>
+    /// <param name="EquipType">Equip type.</param>
+    /// <param name="equipID">Equip identifier.</param>
+    public string SetEquip(EquipmentType EquipType, string equipID)
     {
+        var ret1 = equips[EquipType];
+        if(ret1)
+            Debug.Log(ret1.ToString());
         if (equipID == "-1"&&equips[EquipType]!=null)
         {
-            equips[EquipType].UnEquip(attrSys,valuesSys);
+            var ret =  equips[EquipType];
+            ret.UnEquip(attrSys, valuesSys);
             equips[EquipType] = null;
             EquipChanged(EquipType, equipID);
+            if (!ret) { return "-1"; } else { return ret.ID; }
         }
-        var s = Resources.Load<Equipment>(Path.respDataEquip + equipID);
-        if (s != null)
+        else if(equipID != "-1" && equips[EquipType] != null)
         {
-            equips[EquipType] = s;
-            equips[EquipType].Equip(attrSys, valuesSys);
-            EquipChanged(EquipType, equipID);
+            var s = Resources.Load<Equipment>(Path.respDataEquip + equipID);
+            if (s != null)
+            {
+                var ret = equips[EquipType];
+                ret.UnEquip(attrSys, valuesSys);
+                equips[EquipType] = s;
+                equips[EquipType].Equip(attrSys, valuesSys);
+                EquipChanged(EquipType, equipID);
+                return ret.ID;
+            }
+            return "-1";
         }
+        else if(equipID != "-1" && equips[EquipType] == null)
+        {
+            var s = Resources.Load<Equipment>(Path.respDataEquip + equipID);
+            if (s != null)
+            {
+                equips[EquipType] = s;
+                equips[EquipType].Equip(attrSys, valuesSys);
+                EquipChanged(EquipType, equipID);
+            }
+            return "-1";
+        }
+        else return "-1";
     }
 
     public void NextFreeSlot(ref int row,ref int line)
@@ -71,22 +107,45 @@ public class HeroManager : MonoBehaviour, ModelInterface
         }
     }
 
-    public void SetPackage(int row, int line, string equipID)
+    /// <summary>
+    /// 设置背包物品
+    /// </summary>
+    /// <returns>换掉物品的ID</returns>
+    /// <param name="row">Row.</param>
+    /// <param name="line">Line.</param>
+    /// <param name="equipID">Equip identifier.</param>
+    public string SetPackage(int row, int line, string equipID)
     {
         if (equipID == "-1")
         {
+            var ret = packages[row, line];
             packages[row, line] = null;
             PackageChanged(row, line, equipID);
+            if (!ret) { return "-1"; } else { return ret.ID; }
         }
 
         var s = Resources.Load<Equipment>(Path.respDataEquip + equipID);
 
         if (s != null)
         {
-            s.AddEquips();
+            if(s.IsFirstInstantiate())
+                s.AddEquips();
+            var ret = packages[row, line];
             packages[row, line] = s;
             PackageChanged(row, line, equipID);
+            if (!ret) { return "-1"; } else { return ret.ID; }
         }
+        return "-1";
+    }
+
+    public Equipment GetEquips(EquipmentType type)
+    {
+        return equips[type];
+    }
+
+    public Equipment GetPackage(int row,int line)
+    {
+        return packages[row, line];
     }
 
     public void SetSkill(int slotNumber, string skillID)
@@ -98,6 +157,7 @@ public class HeroManager : MonoBehaviour, ModelInterface
     public bool AddAttribtePoint(ValuesType valuesType)
     {
         if (leftAttrPoint <= 0) return false;
+        addAttrPointDic[valuesType] += 1;
         switch (valuesType)
         {
             case ValuesType.strength:
@@ -114,12 +174,51 @@ public class HeroManager : MonoBehaviour, ModelInterface
                 return true;
             case ValuesType.physique:
                 leftAttrPoint -= 1;
-                Debug.Log("happen");
                 attrSys.AddPhysique(1);
                 return true;
             case ValuesType.lucky:
                 leftAttrPoint -= 1;
                 attrSys.AddLucky(1);
+                return true;
+            default:
+                Debug.LogError("error");
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// 这个函数具有一个Bug，就是可以使用减去物品的属性，以后可以尝试维护
+    /// </summary>
+    /// <returns><c>true</c>, if attribte point was minused, <c>false</c> otherwise.</returns>
+    /// <param name="valuesType">Values type.</param>
+    public bool MinusAttribtePoint(ValuesType valuesType)
+    {
+        if (addAttrPointDic[valuesType] == 0)
+        {
+            return false;
+        }
+        addAttrPointDic[valuesType] -= 1;
+        switch (valuesType)
+        {
+            case ValuesType.strength:
+                leftAttrPoint += 1;
+                attrSys.AddStrength(-1);
+                return true;
+            case ValuesType.agile:
+                leftAttrPoint += 1;
+                attrSys.AddAgile(-1);
+                return true;
+            case ValuesType.intellgence:
+                leftAttrPoint += 1;
+                attrSys.AddIntelligence(-1);
+                return true;
+            case ValuesType.physique:
+                leftAttrPoint += 1;
+                attrSys.AddPhysique(-1);
+                return true;
+            case ValuesType.lucky:
+                leftAttrPoint += 1;
+                attrSys.AddLucky(-1);
                 return true;
             default:
                 Debug.LogError("error");

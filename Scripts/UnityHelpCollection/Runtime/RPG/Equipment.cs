@@ -30,6 +30,12 @@ public class Equipment : ScriptableObject,IEquipment
         }
     }
 
+    public bool IsFirstInstantiate()
+    {
+        if (Equips.Count == 0) return true;
+        else return false;
+    }
+
     public void AddEquips()
     {
         EquipmentsFactory factory = new EquipmentsFactory();
@@ -54,5 +60,12 @@ public class Equipment : ScriptableObject,IEquipment
         {
             v.UnEquip(sys1, sys2);
         }
+    }
+
+    public override string ToString()
+    {
+        string s = "";
+        foreach(var v in Equips) { s+=v.ToString()+"\t"; }
+        return s;
     }
 }
