@@ -20,9 +20,12 @@ public class UIManager : MonoBehaviour
     private Button[,] packageBtn = new Button[8, 8];
     private Button heroAvatar;
     private Dictionary<EquipmentType, Image> equips = new Dictionary<EquipmentType, Image>();
+    private Dictionary<Button, EquipmentType> diffEquipsBtn = new Dictionary<Button, EquipmentType>();
     private Dictionary<EquipmentType, Button> equipsBtn = new Dictionary<EquipmentType, Button>();
     public Dictionary<tabType, GameObject> tabPages = new Dictionary<tabType, GameObject>();
     public Dictionary<ValuesType, Text> valuesText = new Dictionary<ValuesType, Text>();
+    public Dictionary<Button, ValuesType> valuesBtn = new Dictionary<Button, ValuesType>();
+    public Text attrPointText;
 
     public HeroManager model;
     public UIController control;
@@ -38,8 +41,8 @@ public class UIManager : MonoBehaviour
         model.PackageChanged += PackageChanged;
         model.EquipChanged+=EquipChanged;
 
-        ButtomPanel = GameObject.FindWithTag("buttomPanel");
-        HeroPanel = GameObject.FindWithTag("heroPanel");
+        ButtomPanel = transform.Find("底部面板").gameObject;
+        HeroPanel = transform.Find("人物面板").gameObject;
 
         for (int i = 1; i <= 6; i++)
         {
@@ -52,7 +55,9 @@ public class UIManager : MonoBehaviour
         #region 初始化属性界面
         var father0 = HeroPanel.transform.Find("属性界面");
         model.valuesSys.valueChanged += attrValueChanged;
+        model.attrSys.valueChanged += attrValueChanged;
         valuesText[ValuesType.attackValue] = father0.transform.Find("物理伤害数值").GetComponent<Text>();
+        valuesText[ValuesType.attackSpeed] = father0.transform.Find("攻击速度数值").GetComponent<Text>();
         valuesText[ValuesType.health] = father0.transform.Find("生命上限数值").GetComponent<Text>();
         valuesText[ValuesType.magic] = father0.transform.Find("魔法上限数值").GetComponent<Text>();
         valuesText[ValuesType.spellPower] = father0.transform.Find("法术强度数值").GetComponent<Text>();
@@ -62,6 +67,26 @@ public class UIManager : MonoBehaviour
         valuesText[ValuesType.hpRestoreSpeed] = father0.transform.Find("生命回复数值").GetComponent<Text>();
         valuesText[ValuesType.dodgeRate] = father0.transform.Find("闪避率数值").GetComponent<Text>();
         valuesText[ValuesType.critcalRate] = father0.transform.Find("暴击率数值").GetComponent<Text>();
+        valuesText[ValuesType.strength] = father0.transform.Find("力量数值").GetComponent<Text>();
+        valuesText[ValuesType.agile] = father0.transform.Find("敏捷数值").GetComponent<Text>();
+        valuesText[ValuesType.intellgence] = father0.transform.Find("智力数值").GetComponent<Text>();
+        valuesText[ValuesType.lucky] = father0.transform.Find("幸运数值").GetComponent<Text>();
+        valuesText[ValuesType.physique] = father0.transform.Find("体质数值").GetComponent<Text>();
+        attrPointText = father0.transform.Find("属性点数值").GetComponent<Text>();
+        attrPointText.text = model.LeftAttrPoint.ToString();
+
+        #region 注册加点按钮
+        valuesBtn[father0.transform.Find("力量加点").GetComponent<Button>()] = ValuesType.strength;
+        valuesBtn[father0.transform.Find("敏捷加点").GetComponent<Button>()] = ValuesType.agile;
+        valuesBtn[father0.transform.Find("智力加点").GetComponent<Button>()] = ValuesType.intellgence;
+        valuesBtn[father0.transform.Find("体质加点").GetComponent<Button>()] = ValuesType.physique;
+        valuesBtn[father0.transform.Find("幸运加点").GetComponent<Button>()] = ValuesType.lucky;
+        foreach(var v in valuesBtn.Keys)
+        {
+            v.onClick.AddListener(delegate () { if (model.AddAttribtePoint(valuesBtn[v])) { attrPointText.text = model.LeftAttrPoint.ToString(); } });
+        }
+        #endregion
+
         #endregion
 
         #region 初始化装备字典
@@ -73,6 +98,7 @@ public class UIManager : MonoBehaviour
         equips[EquipmentType.shoes] = father1.transform.Find("鞋子").GetComponent<Image>();
         equips[EquipmentType.clothes] = father1.transform.Find("衣服").GetComponent<Image>();
         equips[EquipmentType.weapon] = father1.transform.Find("武器1").GetComponent<Image>();
+        foreach(var pairs in equips.)
         #endregion
 
         #region 初始化背包
@@ -80,8 +106,9 @@ public class UIManager : MonoBehaviour
         for(int i = 0;i<8;i++)
             for(int j = 0; j < 8; j++)
             {
-                Debug.Log("pack" + (i * 8 + (j + 1)).ToString());
                 var ch = father2.Find("pack" + (i * 8 + (j + 1)).ToString());
+                var btn = ch.GetComponent<Button>();
+                btn.onClick.AddListener(delegate () { control.PackageBtnClick(btn, i, j); });
                 var pic = ch.Find("Image").GetComponent<Image>();
                 packageImage[i, j] = pic;
             }
@@ -112,6 +139,8 @@ public class UIManager : MonoBehaviour
 
         #region 注册人物头像，初始化页面
         heroAvatar = ButtomPanel.transform.Find("人物头像").GetComponent<Button>();
+        experience = ButtomPanel.transform.Find("经验条").GetComponent<Slider>();
+        model.ExperienceChanged += ExperienceChanged;
         heroAvatar.onClick.AddListener(delegate()
         {
             Debug.Log("人物头像点击");
@@ -124,7 +153,22 @@ public class UIManager : MonoBehaviour
 
     private void attrValueChanged()
     {
+        valuesText[ValuesType.agile].text = model.attrSys.agile.ToString();
         valuesText[ValuesType.attackValue].text = model.valuesSys.AttackValue.ToString();
+        valuesText[ValuesType.attackSpeed].text = model.valuesSys.AttackSpeed.ToString();
+        valuesText[ValuesType.critcalRate].text = model.valuesSys.CritRate.ToString() + "%";
+        valuesText[ValuesType.dodgeRate].text = model.valuesSys.DodgeRate.ToString() + "%";
+        valuesText[ValuesType.health].text = model.valuesSys.HealthLimit.ToString();
+        valuesText[ValuesType.hpRestoreSpeed].text = model.valuesSys.HpRestoreSpeed.ToString();
+        valuesText[ValuesType.intellgence].text = model.attrSys.intelligence.ToString();
+        valuesText[ValuesType.lucky].text = model.attrSys.lucky.ToString();
+        valuesText[ValuesType.magic].text = model.valuesSys.MagicLimit.ToString();
+        valuesText[ValuesType.magicRes].text = model.valuesSys.MagicResistance.ToString() + "%";
+        valuesText[ValuesType.mpRestoreSpeed].text = model.valuesSys.MpRestoreSpeed.ToString();
+        valuesText[ValuesType.physicRes].text = model.valuesSys.PhysicalResistance.ToString() + "%";
+        valuesText[ValuesType.physique].text = model.attrSys.physique.ToString();
+        valuesText[ValuesType.spellPower].text = model.valuesSys.SpellPower.ToString() + "%";
+        valuesText[ValuesType.strength].text = model.attrSys.strength.ToString();
     }
 
     void EquipChanged(EquipmentType type, string id)

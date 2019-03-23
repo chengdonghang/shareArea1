@@ -72,14 +72,12 @@ public class UIController : MonoBehaviour,ControlInterface
         }
     }
 
-    public void PackageBtnClick(Button button)
+    public void PackageBtnClick(Button button, int row, int line)
     {
-        if (!button.name.Contains("pack")) { Debug.LogError("error"); return; }
-        var index = int.Parse(button.name.Substring(4));
-
+        throw new System.NotImplementedException();
     }
 
-    public void EquipBtnClick(Button button)
+    public void EquipBtnClick(Button button, EquipmentType type)
     {
         throw new System.NotImplementedException();
     }

@@ -21,6 +21,9 @@ public class HeroManager : MonoBehaviour, ModelInterface
     private Equipment[,] packages = new Equipment[8, 8];
     private Dictionary<EquipmentType, Equipment> equips = new Dictionary<EquipmentType, Equipment>();
 
+    private float expPoint = 0.0f;
+    private int leftAttrPoint = 10; //人物属性点
+    public int LeftAttrPoint { get { return leftAttrPoint; } }
 
     void Awake()
     {
@@ -92,5 +95,35 @@ public class HeroManager : MonoBehaviour, ModelInterface
         if (skillID == "-1") { }
     }
 
-    
+    public bool AddAttribtePoint(ValuesType valuesType)
+    {
+        if (leftAttrPoint <= 0) return false;
+        switch (valuesType)
+        {
+            case ValuesType.strength:
+                leftAttrPoint -= 1;
+                attrSys.AddStrength(1);
+                return true;
+            case ValuesType.agile:
+                leftAttrPoint -= 1;
+                attrSys.AddAgile(1);
+                return true;
+            case ValuesType.intellgence:
+                leftAttrPoint -= 1;
+                attrSys.AddIntelligence(1);
+                return true;
+            case ValuesType.physique:
+                leftAttrPoint -= 1;
+                Debug.Log("happen");
+                attrSys.AddPhysique(1);
+                return true;
+            case ValuesType.lucky:
+                leftAttrPoint -= 1;
+                attrSys.AddLucky(1);
+                return true;
+            default:
+                Debug.LogError("error");
+                return false;
+        }
+    }
 }

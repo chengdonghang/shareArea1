@@ -36,6 +36,7 @@ public class AttributeSys:MonoBehaviour
         agile += value;
         valuesSys.physicalResistance += (value * implicatedValues[1]);
         valuesSys.attackSpeed += (int)(value * implicatedValues[2]);
+        valueChanged();
     }
 
     public void AddIntelligence(int value)
@@ -45,6 +46,7 @@ public class AttributeSys:MonoBehaviour
         valuesSys.spellPower += (value * implicatedValues[4]);
         valuesSys.mpRestoreSpeed += (int)(value * implicatedValues[5]);
         valuesSys.magicLimit += (int)(value * implicatedValues[6]);
+        valueChanged();
     }
 
     public void AddPhysique(int value)
@@ -52,13 +54,15 @@ public class AttributeSys:MonoBehaviour
         physique += value;
         valuesSys.healthLimit += (int)(value * implicatedValues[7]);
         valuesSys.hpRestoreSpeed += (int)(value * implicatedValues[8]);
+        valueChanged();
     }
 
     public void AddLucky(int value)
     {
         lucky += value;
-        valuesSys.CritRate += (value * implicatedValues[9]);
+        valuesSys.critRate += (value * implicatedValues[9]);
         valuesSys.dodgeRate += (value * implicatedValues[10]);
+        valueChanged();
     }
 
 

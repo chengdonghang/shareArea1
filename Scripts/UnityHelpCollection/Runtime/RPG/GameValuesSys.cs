@@ -36,7 +36,7 @@ public class GameValuesSys : MonoBehaviour {
     public float dodgeRate = 0.0f;
     public int HpRestoreSpeed { get { return hpRestoreSpeed; } set { hpRestoreSpeed = value; valueChanged(); } }
     public int hpRestoreSpeed = 1;
-    public int MpRestoreSpeed { get { return MpRestoreSpeed; } set { MpRestoreSpeed = value; valueChanged(); } }
+    public int MpRestoreSpeed { get { return mpRestoreSpeed; } set { mpRestoreSpeed = value; valueChanged(); } }
     public int mpRestoreSpeed = 1;
     public int CritcalMult = 1;
 
@@ -87,14 +87,30 @@ public class GameValuesSys : MonoBehaviour {
     public bool HurtByPhysical(int value)
     {
         if (dodgeRate >= UnityEngine.Random.value) { Dodged.Invoke(); return false; }
-        HP -= Mathf.FloorToInt(value * physicalResistance);
+        if(physicalResistance>=-1.0&&physicalResistance <= 1.0)
+        {
+            HP -= Mathf.FloorToInt(value * (1 - physicalResistance));
+        }
+        else
+        {
+            Debug.LogWarning("physicRes" + physicalResistance);
+            HP -= Mathf.FloorToInt(value * (1 - physicalResistance));
+        }
         HpHasChanged();
         return true;
     }
 
     public void HurtByMagic(int value)
     {
-        HP -= Mathf.FloorToInt(value * magicResistance);
+        if (magicResistance >= -1.0 && magicResistance <= 1.0)
+        {
+            HP -= Mathf.FloorToInt(value * (1 - magicResistance));
+        }
+        else
+        {
+            Debug.LogWarning("physicRes" + magicResistance);
+            HP -= Mathf.FloorToInt(value * (1 - magicResistance));
+        }
         HpHasChanged();
     }
 

@@ -116,6 +116,7 @@ public static class Path
     public static string respDataSkill = respData + "Skill/";
 }
 
+
 public class e_Health : IEquip
 {
     private int value;
@@ -277,14 +278,147 @@ public class e_AttackSpeed : IEquip
 
     public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
     {
-        valuesSys.attackSpeed += value;
+        valuesSys.AttackSpeed += value;
     }
 
     public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
     {
-        valuesSys.attackSpeed -= value;
+        valuesSys.AttackSpeed -= value;
     }
 }
+public class e_HpRestoreSpeed : IEquip
+{
+    private int value;
+    public e_HpRestoreSpeed(int value)
+    {
+        this.value = value;
+    }
+
+    public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.HpRestoreSpeed += value;
+    }
+
+    public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.HpRestoreSpeed -= value;
+    }
+}
+public class e_MpRestoreSpeed : IEquip
+{
+    private int value;
+    public e_MpRestoreSpeed(int value)
+    {
+        this.value = value;
+    }
+
+    public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.MpRestoreSpeed += value;
+    }
+
+    public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.MpRestoreSpeed -= value;
+    }
+}
+
+public class e_PhysicRes : IEquip
+{
+    private float value;
+    public e_PhysicRes(int value)
+    {
+        if (value > 100 || value < -100) Debug.LogError("value too big or small");
+        this.value = value/100;
+    }
+
+    public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.PhysicalResistance += value;
+    }
+
+    public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.PhysicalResistance -= value;
+    }
+}
+public class e_MagicRes : IEquip
+{
+    private float value;
+    public e_MagicRes(int value)
+    {
+        if (value > 100 || value < -100) Debug.LogError("value too big or small");
+        this.value = value / 100;
+    }
+
+    public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.MagicResistance += value;
+    }
+
+    public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.MagicResistance -= value;
+    }
+}
+public class e_SpellPower : IEquip
+{
+    private float value;
+    public e_SpellPower(int value)
+    {
+        if (value > 100 || value < -100) Debug.LogError("value too big or small");
+        this.value = value / 100;
+    }
+
+    public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.SpellPower += value;
+    }
+
+    public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.SpellPower -= value;
+    }
+}
+public class e_CritcalRate : IEquip
+{
+    private float value;
+    public e_CritcalRate(int value)
+    {
+        if (value > 100 || value < -100) Debug.LogError("value too big or small");
+        this.value = value / 100;
+    }
+
+    public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.CritRate += value;
+    }
+
+    public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.CritRate -= value;
+    }
+}
+public class e_DodgeRate : IEquip
+{
+    private float value;
+    public e_DodgeRate(int value)
+    {
+        if (value > 100 || value < -100) Debug.LogError("value too big or small");
+        this.value = value / 100;
+    }
+
+    public void Equip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.DodgeRate += value;
+    }
+
+    public void UnEquip(AttributeSys attributeSys, GameValuesSys valuesSys)
+    {
+        valuesSys.DodgeRate -= value;
+    }
+}
+
 
 public class EquipmentsFactory
 {
@@ -309,7 +443,21 @@ public class EquipmentsFactory
             case ValuesType.attackValue:
                 return new e_AttackValue(value);
             case ValuesType.attackSpeed:
-                return new e_A
+                return new e_AttackSpeed(value);
+            case ValuesType.physicRes:
+                return new e_PhysicRes(value);
+            case ValuesType.magicRes:
+                return new e_MagicRes(value);
+            case ValuesType.spellPower:
+                return new e_SpellPower(value);
+            case ValuesType.critcalRate:
+                return new e_CritcalRate(value);
+            case ValuesType.dodgeRate:
+                return new e_DodgeRate(value);
+            case ValuesType.hpRestoreSpeed:
+                return new e_HpRestoreSpeed(value);
+            case ValuesType.mpRestoreSpeed:
+                return new e_MpRestoreSpeed(value);
             default:
                 Debug.LogError("error");
                 return null;
