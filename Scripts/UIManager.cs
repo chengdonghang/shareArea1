@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using tabType = SwitchTab;
+using Rpg;
+using tabType = Rpg.SwitchTab;
 
 public class UIManager : MonoBehaviour
 {

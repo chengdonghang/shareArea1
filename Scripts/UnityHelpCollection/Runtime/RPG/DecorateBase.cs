@@ -2,27 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class DecorateBase : Equipment
+namespace Rpg
 {
-    public Equipment baseE;
-
-    public new void AddEquips()
+    public class DecorateBase : Equipment
     {
-        EquipmentsFactory factory = new EquipmentsFactory();
-        foreach (var v in spawns)
-        {
-            Equips.Add(factory.SpawnProduct(v.equipType, v.value));
-        }
+        public Equipment baseE;
 
-        baseE.AddEquips();
-        foreach(var v in baseE.spawns)
+        public new void AddEquips()
         {
-            Equips.AddRange(baseE.Equips);
+            EquipmentsFactory factory = new EquipmentsFactory();
+            foreach (var v in spawns)
+            {
+                Equips.Add(factory.SpawnProduct(v.equipType, v.value));
+            }
+
+            baseE.AddEquips();
+            foreach (var v in baseE.spawns)
+            {
+                Equips.AddRange(baseE.Equips);
+            }
+            return;
         }
-        return;
     }
 }
+
+
 
 
 
