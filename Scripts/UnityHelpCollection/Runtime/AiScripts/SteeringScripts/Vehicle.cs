@@ -41,16 +41,6 @@ namespace SteeringSys
             velocity = Vector3.zero;
         }
 
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, StoppingDis);
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, SlowDownDis);
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, characterRadius);
-        }
-
         void Awake()
         {
             steeringForce = new Vector3(0, 0, 0);

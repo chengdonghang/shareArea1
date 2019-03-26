@@ -5,6 +5,19 @@ using UnityEngine;
 
 namespace SteeringSys
 {
+    public enum ForceType
+    {
+        arrive,
+        flee,
+        pursuit,
+        avoid,
+        wander,
+        alignment,
+        cohesion,
+        evade
+    }
+
+
     public abstract class Steering : MonoBehaviour
     {
         public float weight = 1;

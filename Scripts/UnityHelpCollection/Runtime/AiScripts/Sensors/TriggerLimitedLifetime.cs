@@ -8,6 +8,7 @@ namespace Sensors
     public class TriggerLimitedLifetime : Trigger
     {
         public float lifetime;
+
         public override void Updateme()
         {
             lifetime -= Time.deltaTime;

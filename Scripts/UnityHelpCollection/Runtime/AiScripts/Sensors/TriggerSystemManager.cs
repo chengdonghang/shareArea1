@@ -15,8 +15,11 @@ namespace Sensors
         {
             get
             {
-                if(!instance)
-                    instance = new TriggerSys();
+                if (!instance)
+                {
+                    var g = new GameObject("TriggerSys");
+                    instance = g.AddComponent<TriggerSys>();
+                }
                 return instance;
             }
         }

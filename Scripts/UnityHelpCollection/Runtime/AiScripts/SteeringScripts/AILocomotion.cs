@@ -10,6 +10,7 @@ namespace SteeringSys
     /// </summary>
     public class AILocomotion:Vehicle
     {
+
         public bool ifTurning = true;
         private CharacterController controller;
         private Rigidbody theRigidbody;
@@ -18,6 +19,10 @@ namespace SteeringSys
         private Vector3 moveDistance;
         private float sumDegree;
 
+        #region 特殊力参数区
+        public float MAX_SEE_AHEAD = 2.0f;
+        #endregion
+
         #region 查找与删除力
         public bool DisableForce<T>()where T:Steering
         {
@@ -25,6 +30,27 @@ namespace SteeringSys
             if (!force) throw new NullReferenceException("没有那种类型的力");
             force.enabled = false;
             return true;
+        }
+
+        public bool DisableForce(ForceType forceType)
+        {
+            switch (forceType)
+            {
+                case ForceType.arrive:
+                    DisableForce<SteeringForArrive>();
+                    return true;
+                case ForceType.flee:
+                    DisableForce<SteeringForFlee>();
+                    return true;
+                case ForceType.pursuit:
+                    DisableForce<SteeringForPursuit>();
+                    return true;
+                case ForceType.wander:
+                    DisableForce<SteeringForWander>();
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         public bool DisableAllForce()
@@ -46,31 +72,60 @@ namespace SteeringSys
         #endregion
 
         #region 增添操纵力
+
+        public SteeringForCollisionAvoidance AvoidWallOn()
+        {
+            var comp = GetComponent<SteeringForCollisionAvoidance>();
+            if (!comp)
+                comp = gameObject.AddComponent<SteeringForCollisionAvoidance>();
+            comp.isPlanar = isPlanar;
+            steerings.Add(comp);
+            return comp;
+        }
+
         public SteeringForArrive ArriveTo(GameObject destination)
         {
             var comp = GetComponent<SteeringForArrive>();
-            if(!comp)
+            if (!comp)
+            {
                 comp = gameObject.AddComponent<SteeringForArrive>();
+                steerings.Add(comp);
+            }
             comp.arrivalDistance = StoppingDis;
             comp.characterRadius = characterRadius;
             comp.slowDownDistance = SlowDownDis;
             comp.isPlanar = isPlanar;
             comp.target = destination;
-            steerings.Add(comp);
             return comp;
         }
 
-        public SteeringFollowPath FollowPath(List<Transform> path)
+        public SteeringFollowPath FollowPath(GameObject fatherNode,bool ifWhile)
+        {
+            List<Transform> path = new List<Transform>();
+            foreach(Transform o in fatherNode.transform)
+            {
+                if (o!=fatherNode.transform)
+                {
+                    path.Add(o);
+                }
+            }
+            return FollowPath(path,ifWhile);
+        }
+
+        public SteeringFollowPath FollowPath(List<Transform> path,bool ifWhile)
         {
             var comp = GetComponent<SteeringFollowPath>();
             if (!comp)
+            {
                 comp = gameObject.AddComponent<SteeringFollowPath>();
+                steerings.Add(comp);
+            }
             comp.arrivalDistance = StoppingDis;
             comp.pointRadius = characterRadius;
             comp.slowDownDistance = SlowDownDis;
             comp.isPlanar = isPlanar;
+            comp.ifWhile = ifWhile;
             comp.SetTargets(path);
-            steerings.Add(comp);
             return comp;
         }
      
@@ -78,9 +133,11 @@ namespace SteeringSys
         {
             var comp = GetComponent<SteeringForPursuit>();
             if (!comp)
+            {
                 comp = gameObject.AddComponent<SteeringForPursuit>();
+                steerings.Add(comp);
+            }
             comp.target = target;
-            steerings.Add(comp);
             return comp;
         }
 
@@ -88,11 +145,35 @@ namespace SteeringSys
         {
             var comp = GetComponent<SteeringForFlee>();
             if (!comp)
+            {
                 comp = gameObject.AddComponent<SteeringForFlee>();
+                steerings.Add(comp);
+            }
             comp.target = target;
-            steerings.Add(comp);
             return comp;
         }
+
+        public SteeringForWander WanderOn(float wanderRadius,float wanderJitter,float wanderDis)
+        {
+            var comp = GetComponent<SteeringForWander>();
+            if (comp)
+            {
+                comp.wanderJitter = wanderJitter;
+                comp.wanderDistance = wanderDis;
+                comp.wanderRadius = wanderRadius;
+            }
+            else
+            {
+                comp = gameObject.AddComponent<SteeringForWander>();
+                steerings.Add(comp);
+                comp.wanderJitter = wanderJitter;
+                comp.wanderDistance = wanderDis;
+                comp.wanderRadius = wanderRadius;
+            }
+            return comp;
+        }
+        
+
         /// <summary>
         /// 增添一个操纵力，不改变其默认参数
         /// </summary>
@@ -148,6 +229,17 @@ namespace SteeringSys
                 transform.forward = newForward;
             }
             
+        }
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, StoppingDis);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, SlowDownDis);
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, characterRadius);
+            Gizmos.DrawRay(transform.position, transform.forward * MAX_SEE_AHEAD);
         }
     }
 }
