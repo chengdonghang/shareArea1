@@ -7,6 +7,7 @@ namespace SteeringSys
 {
     public enum ForceType
     {
+        m_null = -1,
         arrive,
         flee,
         pursuit,

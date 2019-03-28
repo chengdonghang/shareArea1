@@ -75,22 +75,14 @@ namespace SteeringSys
 
         public SteeringForCollisionAvoidance AvoidWallOn()
         {
-            var comp = GetComponent<SteeringForCollisionAvoidance>();
-            if (!comp)
-                comp = gameObject.AddComponent<SteeringForCollisionAvoidance>();
+            var comp = AddForce<SteeringForCollisionAvoidance>();
             comp.isPlanar = isPlanar;
-            steerings.Add(comp);
             return comp;
         }
 
         public SteeringForArrive ArriveTo(GameObject destination)
         {
-            var comp = GetComponent<SteeringForArrive>();
-            if (!comp)
-            {
-                comp = gameObject.AddComponent<SteeringForArrive>();
-                steerings.Add(comp);
-            }
+            var comp = AddForce<SteeringForArrive>();
             comp.arrivalDistance = StoppingDis;
             comp.characterRadius = characterRadius;
             comp.slowDownDistance = SlowDownDis;
@@ -114,12 +106,7 @@ namespace SteeringSys
 
         public SteeringFollowPath FollowPath(List<Transform> path,bool ifWhile)
         {
-            var comp = GetComponent<SteeringFollowPath>();
-            if (!comp)
-            {
-                comp = gameObject.AddComponent<SteeringFollowPath>();
-                steerings.Add(comp);
-            }
+            var comp = AddForce<SteeringFollowPath>();
             comp.arrivalDistance = StoppingDis;
             comp.pointRadius = characterRadius;
             comp.slowDownDistance = SlowDownDis;
@@ -131,45 +118,24 @@ namespace SteeringSys
      
         public SteeringForPursuit ChaseTo(GameObject target)
         {
-            var comp = GetComponent<SteeringForPursuit>();
-            if (!comp)
-            {
-                comp = gameObject.AddComponent<SteeringForPursuit>();
-                steerings.Add(comp);
-            }
+            var comp = AddForce<SteeringForPursuit>();
             comp.target = target;
             return comp;
         }
 
         public SteeringForFlee FleeFrom(GameObject target)
         {
-            var comp = GetComponent<SteeringForFlee>();
-            if (!comp)
-            {
-                comp = gameObject.AddComponent<SteeringForFlee>();
-                steerings.Add(comp);
-            }
+            var comp = AddForce<SteeringForFlee>();
             comp.target = target;
             return comp;
         }
 
         public SteeringForWander WanderOn(float wanderRadius,float wanderJitter,float wanderDis)
         {
-            var comp = GetComponent<SteeringForWander>();
-            if (comp)
-            {
-                comp.wanderJitter = wanderJitter;
-                comp.wanderDistance = wanderDis;
-                comp.wanderRadius = wanderRadius;
-            }
-            else
-            {
-                comp = gameObject.AddComponent<SteeringForWander>();
-                steerings.Add(comp);
-                comp.wanderJitter = wanderJitter;
-                comp.wanderDistance = wanderDis;
-                comp.wanderRadius = wanderRadius;
-            }
+            var comp = AddForce<SteeringForWander>();
+            comp.wanderJitter = wanderJitter;
+            comp.wanderDistance = wanderDis;
+            comp.wanderRadius = wanderRadius;
             return comp;
         }
         
@@ -180,13 +146,18 @@ namespace SteeringSys
         /// <typeparam name="T"></typeparam>
         public T AddForce<T>()where T : Steering
         {
-            if (!GetComponent<T>())
+            var comp = GetComponent<T>();
+            if (!comp)
             {
-                var comp = gameObject.AddComponent<T>();
+                comp = gameObject.AddComponent<T>();
                 steerings.Add(comp);
                 return comp;
             }
-            return null;
+            else
+            {
+                comp.enabled = true;
+                return comp;
+            }
         }
         #endregion
 
