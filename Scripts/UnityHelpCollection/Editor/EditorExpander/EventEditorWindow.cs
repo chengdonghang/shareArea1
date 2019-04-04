@@ -117,7 +117,10 @@ namespace EventEditor {
                     nowIndex++;
                 }
             }
-            if(GUILayout.Button("删除事件")&&freeSlots.IndexOf(removeIndex)==-1)
+            GUILayout.BeginHorizontal();
+            removeIndex = EditorGUILayout.IntField(removeIndex);
+            Debug.Log(removeIndex);
+            if(GUILayout.Button("删除事件")&&!freeSlots.Contains(removeIndex))
             {
                 DestroyImmediate(triggers[removeIndex].gameObject);
                 DestroyImmediate(events[removeIndex].gameObject);
@@ -126,6 +129,7 @@ namespace EventEditor {
                 freeSlots.Add(removeIndex);
                 Debug.Log(triggers.Count + "   " + events.Count);
             }
+            GUILayout.EndHorizontal();
         }
 
     }

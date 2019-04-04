@@ -5,11 +5,13 @@ using UnityEngine;
 namespace EventEditor
 {
     using UnityEngine.Events;
+
     [ExecuteInEditMode]
     [RequireComponent(typeof(BoxCollider))]
     public class TransformTrigger3D : m_Trigger
     {
         private Collider m_trigger;
+        [Tooltip("具有该种tag值的物体才能被检测到，如果为空则所有都检测")]
         public string checkTag;
         public event UnityAction<Collider> enter;
         public event UnityAction<Collider> stay;
@@ -35,23 +37,22 @@ namespace EventEditor
                 Gizmos.DrawCube(bound.center, bound.size);
             }
         }
+        
 
         void OnTriggerEnter(Collider collider)
         {
-            //Debug.Log("triggers" + this.name);
-            enter(collider);
-            if(collider.tag==checkTag)
-                Send(this, collider);
+            Debug.Log(collider.name + "triggers" + this.name);
+            Send(this, collider);
         }
 
         void OnTriggerStay(Collider collider)
         {
-            stay(collider);
+
         }
 
         void OnTriggerExit(Collider collider)
         {
-            exit(collider);
+
         }
 
     }

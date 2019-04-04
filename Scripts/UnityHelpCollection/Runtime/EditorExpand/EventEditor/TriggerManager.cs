@@ -20,7 +20,7 @@ namespace EventEditor
                 var key = t.GetChild(i).gameObject.GetComponent<m_Trigger>();
                 var value = e.GetChild(i).gameObject.GetComponents<m_Event>();
                 foreach (var v in value)
-                    key.trigger += new TriggerDelegate(v.PlayEvents);
+                    key.trigger += v.PlayEvents;
             }
         }
     }
