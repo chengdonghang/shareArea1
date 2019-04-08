@@ -22,7 +22,14 @@ namespace SteeringSys
             maxSpeed = m_vehicle.maxSpeed;
             isPlanar = m_vehicle.isPlanar;
             circleTarget = new Vector3(wanderRadius * 0.707f, 0, wanderRadius * 0.707f);
+        }
 
+        private void Reset()
+        {
+            m_vehicle = GetComponent<Vehicle>();
+            maxSpeed = m_vehicle.maxSpeed;
+            isPlanar = m_vehicle.isPlanar;
+            circleTarget = new Vector3(wanderRadius * 0.707f, 0, wanderRadius * 0.707f);
         }
 
         public override Vector3 Force()

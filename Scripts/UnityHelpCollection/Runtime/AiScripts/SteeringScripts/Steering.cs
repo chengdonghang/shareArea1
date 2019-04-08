@@ -23,6 +23,11 @@ namespace SteeringSys
     {
         public float weight = 1;
 
+        public virtual void Reset()
+        {
+
+        }
+
         public virtual Vector3 Force()
         {
             return new Vector3(0, 0, 0);

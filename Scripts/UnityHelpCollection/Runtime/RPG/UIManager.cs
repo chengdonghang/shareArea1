@@ -33,17 +33,13 @@ public class UIManager : MonoBehaviour
     public HeroManager model;
     public UIController control;
 
-
-    void Start()
+    private void Start()
     {
-        model.HpChanged += HpChanged;
-        model.MpChanged += MpChanged;
-        model.ExperienceChanged += ExperienceChanged;
-        model.LevelChanged += LevelChanged;
-        model.SkillChanged += SkillChanged;
-        model.PackageChanged += PackageChanged;
-        model.EquipChanged+=EquipChanged;
-
+        if (!model)
+        {
+            Debug.LogWarning("找寻tag为Player的物体获取model");
+            model = GameObject.FindWithTag("PLayer").GetComponent<HeroManager>();
+        }
         ButtomPanel = transform.Find("底部面板").gameObject;
         HeroPanel = transform.Find("人物面板").gameObject;
 
@@ -86,9 +82,9 @@ public class UIManager : MonoBehaviour
         valuesBtnPlus[father0.transform.Find("智力加点").GetComponent<Button>()] = ValuesType.intellgence;
         valuesBtnPlus[father0.transform.Find("体质加点").GetComponent<Button>()] = ValuesType.physique;
         valuesBtnPlus[father0.transform.Find("幸运加点").GetComponent<Button>()] = ValuesType.lucky;
-        foreach(var v in valuesBtnPlus.Keys)
+        foreach (var v in valuesBtnPlus.Keys)
         {
-            v.onClick.AddListener(delegate () { control.AttributeBtnClick(valuesBtnPlus[v],true); });
+            v.onClick.AddListener(delegate () { control.AttributeBtnClick(valuesBtnPlus[v], true); });
         }
         #endregion
 
@@ -100,7 +96,7 @@ public class UIManager : MonoBehaviour
         valuesBtnMinus[father0.transform.Find("幸运减点").GetComponent<Button>()] = ValuesType.lucky;
         foreach (var v in valuesBtnMinus.Keys)
         {
-            v.onClick.AddListener(delegate () { control.AttributeBtnClick(valuesBtnMinus[v],false); });
+            v.onClick.AddListener(delegate () { control.AttributeBtnClick(valuesBtnMinus[v], false); });
         }
         #endregion
 
@@ -123,7 +119,7 @@ public class UIManager : MonoBehaviour
         equipsBtn[EquipmentType.shoes] = father1.transform.Find("鞋子").GetComponent<Button>();
         equipsBtn[EquipmentType.clothes] = father1.transform.Find("衣服").GetComponent<Button>();
         equipsBtn[EquipmentType.weapon] = father1.transform.Find("武器1").GetComponent<Button>();
-        foreach(var pair in equipsBtn)
+        foreach (var pair in equipsBtn)
         {
             pair.Value.onClick.AddListener(delegate
             {
@@ -135,13 +131,13 @@ public class UIManager : MonoBehaviour
 
         #region 初始化背包
         var father2 = HeroPanel.transform.Find("物品界面").Find("背包");
-        for(int i = 0;i<8;i++)
-            for(int j = 0; j < 8; j++)
+        for (int i = 0; i < 8; i++)
+            for (int j = 0; j < 8; j++)
             {
                 var ch = father2.Find("pack" + (i * 8 + (j + 1)).ToString());
                 var btn = ch.GetComponent<Button>();
                 packageDic[btn] = new Point(i, j);
-                btn.onClick.AddListener(delegate () { control.PackageBtnClick(btn,packageDic[btn]._x,packageDic[btn]._y); });
+                btn.onClick.AddListener(delegate () { control.PackageBtnClick(btn, packageDic[btn]._x, packageDic[btn]._y); });
                 var pic = ch.Find("Image").GetComponent<Image>();
                 packageImage[i, j] = pic;
             }
@@ -161,9 +157,9 @@ public class UIManager : MonoBehaviour
         btns[2] = HeroPanel.transform.Find("技能按钮").GetComponent<Button>();
         btns[3] = HeroPanel.transform.Find("任务按钮").GetComponent<Button>();
         btns[4] = HeroPanel.transform.Find("关闭按钮").GetComponent<Button>();
-        foreach(var btn in btns)
+        foreach (var btn in btns)
         {
-            btn.onClick.AddListener(delegate()
+            btn.onClick.AddListener(delegate ()
             {
                 control.TabBtnClick(btn);
             });
@@ -174,15 +170,32 @@ public class UIManager : MonoBehaviour
         heroAvatar = ButtomPanel.transform.Find("人物头像").GetComponent<Button>();
         experience = ButtomPanel.transform.Find("经验条").GetComponent<Slider>();
         model.ExperienceChanged += ExperienceChanged;
-        heroAvatar.onClick.AddListener(delegate()
+        heroAvatar.onClick.AddListener(delegate ()
         {
-            Debug.Log("人物头像点击");
+            //Debug.Log("人物头像点击");
             control.TabBtnClick(heroAvatar);
         });
         HeroPanel.SetActive(false);
-        foreach(var v in tabPages.Values) { v.SetActive(false); }
+        foreach (var v in tabPages.Values) { v.SetActive(false); }
         #endregion
+
+        model.HpChanged += HpChanged;
+        model.MpChanged += MpChanged;
+        model.ExperienceChanged += ExperienceChanged;
+        model.LevelChanged += LevelChanged;
+        model.SkillChanged += SkillChanged;
+        model.PackageChanged += PackageChanged;
+        model.EquipChanged += EquipChanged;
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            control.TabBtnClick(heroAvatar);
+        }
+    }
+
 
     private void attrValueChanged()
     {

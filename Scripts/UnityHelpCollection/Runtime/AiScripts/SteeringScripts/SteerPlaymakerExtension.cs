@@ -7,6 +7,10 @@ namespace HutongGames.PlayMaker.Actions {
     [ActionCategory(ActionCategory.Physics)]
     public class SteerPlaymakerExtension : FsmStateAction
     {
+        [RequiredField]
+        [CheckForComponent(typeof(AILocomotion))]
+
+
         public AILocomotion sys;
         public FsmBool useOwner = true;
         public ForceType forceType = ForceType.m_null;

@@ -24,7 +24,16 @@ namespace SteeringSys
             characterRadius = m_vehicle.characterRadius;
             maxSpeed = m_vehicle.maxSpeed;
             isPlanar = m_vehicle.isPlanar;
+        }
 
+        private void Reset()
+        {
+            m_vehicle = GetComponent<Vehicle>();
+            slowDownDistance = m_vehicle.SlowDownDis;
+            arrivalDistance = m_vehicle.StoppingDis;
+            characterRadius = m_vehicle.characterRadius;
+            maxSpeed = m_vehicle.maxSpeed;
+            isPlanar = m_vehicle.isPlanar;
         }
         public override Vector3 Force()
         {

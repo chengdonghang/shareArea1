@@ -25,6 +25,13 @@ namespace SteeringSys
             toTransform = avoidThing.GetComponent<Transform>();
         }
 
+        private void Reset()
+        {
+            m_vehicle = GetComponent<Vehicle>();
+            maxForce = m_vehicle.maxForce;
+            toTransform = avoidThing.GetComponent<Transform>();
+        }
+
         void OnEnable()
         {
             var ctrl = GetComponent<AILocomotion>();

@@ -137,6 +137,10 @@ namespace Rpg
             MpHasChanged();
         }
 
+        /// <summary>
+        /// 获得该单位的物理攻击
+        /// </summary>
+        /// <returns>物理攻击值</returns>
         public int givePhyDamage()
         {
             if (critRate >= UnityEngine.Random.value)
@@ -147,6 +151,11 @@ namespace Rpg
             return attackValue;
         }
 
+        /// <summary>
+        /// 获得该单位的魔法攻击
+        /// </summary>
+        /// <returns>经过加成后的魔法伤害</returns>
+        /// <param name="baseValue">基础值</param>
         public int giveMagicDamage(int baseValue) { return Mathf.FloorToInt(baseValue * spellPower); }
     }
 

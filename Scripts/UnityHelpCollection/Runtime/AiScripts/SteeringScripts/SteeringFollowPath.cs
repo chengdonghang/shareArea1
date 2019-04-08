@@ -47,7 +47,26 @@ namespace SteeringSys
             numberOfNodes = linePoints.Count;
             if (numberOfNodes!=0)
                 target = linePoints[currentNode];
-        } 
+        }
+
+        private void Reset()
+        {
+            m_vehicle = GetComponent<Vehicle>();
+            slowDownDistance = m_vehicle.SlowDownDis;
+            arrivalDistance = m_vehicle.StoppingDis;
+            sqrArriveDis = arrivalDistance * arrivalDistance;
+            maxSpeed = m_vehicle.maxSpeed;
+            isPlanar = m_vehicle.isPlanar;
+            var g = GameObject.Find(whereHasPath);
+            linePoints.Clear();
+            foreach (Transform t in g.transform)
+            {
+                linePoints.Add(t);
+            }
+            numberOfNodes = linePoints.Count;
+            if (numberOfNodes != 0)
+                target = linePoints[currentNode];
+        }
 
         public override Vector3 Force()
         {

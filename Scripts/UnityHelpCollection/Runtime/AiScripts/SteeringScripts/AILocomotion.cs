@@ -150,6 +150,7 @@ namespace SteeringSys
             if (!comp)
             {
                 comp = gameObject.AddComponent<T>();
+                comp.Reset();
                 steerings.Add(comp);
                 return comp;
             }

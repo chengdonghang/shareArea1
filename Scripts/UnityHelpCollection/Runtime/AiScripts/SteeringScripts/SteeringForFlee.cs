@@ -18,6 +18,12 @@ namespace SteeringSys
             maxSpeed = m_vehicle.maxSpeed;
         }
 
+        private void Reset()
+        {
+            m_vehicle = GetComponent<Vehicle>();
+            maxSpeed = m_vehicle.maxSpeed;
+        }
+
         public override Vector3 Force()
         {
             Vector3 tmpPos = new Vector3(transform.position.x, 0, transform.position.z);

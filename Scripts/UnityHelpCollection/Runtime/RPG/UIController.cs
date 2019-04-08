@@ -12,6 +12,15 @@ public class UIController : MonoBehaviour,ControlInterface
     public UIManager uiManager;
     public HeroManager model;
 
+    private void Awake()
+    {
+        if (!model)
+        {
+            Debug.LogWarning("找寻tag为Player的物体获取model");
+            model = GameObject.FindWithTag("PLayer").GetComponent<HeroManager>();
+        }
+    }
+
     private void SwitchTo(SwitchTab tab)
     {
         if (nowTab != tab)
@@ -49,11 +58,13 @@ public class UIController : MonoBehaviour,ControlInterface
                 }
             case "关闭按钮":
                 {
+                    Time.timeScale = 1.0f;
                     uiManager.HeroPanel.SetActive(false);
                     break;
                 }
             case "人物头像":
                 {
+                    Time.timeScale = 0.0f;
                     uiManager.HeroPanel.SetActive(true);
                     uiManager.tabPages[nowTab].SetActive(true);
                     break;

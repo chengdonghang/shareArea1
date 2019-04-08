@@ -29,9 +29,11 @@ namespace Rpg
         public Dictionary<ValuesType, int> addAttrPointDic = new Dictionary<ValuesType, int>();
         private int leftAttrPoint = 0; //人物属性点
         public int LeftAttrPoint { get { return leftAttrPoint; } }
+        private bool init = false;
 
         void Awake()
         {
+
             valuesSys = GetComponent<GameValuesSys>();
             attrSys = GetComponent<AttributeSys>();
 
@@ -54,18 +56,34 @@ namespace Rpg
 
             nowLevel = 1;
             nowExperience = 0;
-            ExperienceChanged(0);
-            LevelChanged(1);
+        }
+
+        private void Update()
+        {
+            if (!init)
+            {
+                ExperienceChanged(0);
+                LevelChanged(1);
+                init = true;
+            }
+
         }
 
         public void AddExperience(int add)
         {
-            var rea = heroLevelData.levelReachExperience[nowLevel];
+            int rea = 0;
+            if (heroLevelData)
+                rea = heroLevelData.levelReachExperience[nowLevel];
+            else
+                rea = 100;
             if (add + nowExperience >= rea)
             {
                 nowExperience = add + nowExperience - rea;
                 nowLevel += 1;
-                leftAttrPoint += heroLevelData.upGetAttrPoint;
+                if (heroLevelData)
+                    leftAttrPoint += heroLevelData.upGetAttrPoint;
+                else
+                    leftAttrPoint += 10;
                 AttributeChanged();
                 LevelChanged(nowLevel);
                 ExperienceChanged(nowExperience);
@@ -76,7 +94,6 @@ namespace Rpg
                 ExperienceChanged(nowExperience);
             }
         }
-
 
         /// <summary>
         /// 设置装备栏

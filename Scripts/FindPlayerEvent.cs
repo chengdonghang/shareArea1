@@ -10,7 +10,7 @@ public class FindPlayerEvent : m_Event
     // Start is called before the first frame update
     void Start()
     {
-        var player = GameObject.FindWithTag("player");
+        var player = GameObject.FindWithTag("Player");
         if (player) _player = player;
         else Debug.LogError("没有找到玩家");
     }

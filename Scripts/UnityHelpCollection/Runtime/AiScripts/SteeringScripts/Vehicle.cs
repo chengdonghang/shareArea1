@@ -13,12 +13,12 @@ namespace SteeringSys
         public float maxForce = 100;
         protected float sqrMaxSpeed;
         public float mass = 1;
-        public Vector3 velocity;
+        public Vector3 velocity = new Vector3();
         public float damping = 0.9f;
         public float computeInterval = 0.2f;
         public bool isPlanar = true;
-        private Vector3 steeringForce;
-        protected Vector3 acceleration;
+        private Vector3 steeringForce = new Vector3();
+        protected Vector3 acceleration = new Vector3();
         public float timer;
         public bool DebugMode = true;
 
