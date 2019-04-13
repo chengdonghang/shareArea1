@@ -13,7 +13,7 @@ namespace SteeringSys
         public float maxForce = 100;
         protected float sqrMaxSpeed;
         public float mass = 1;
-        public Vector3 velocity = new Vector3();
+        public Vector3 velocity;
         public float damping = 0.9f;
         public float computeInterval = 0.2f;
         public bool isPlanar = true;
@@ -45,6 +45,7 @@ namespace SteeringSys
         {
             steeringForce = new Vector3(0, 0, 0);
             sqrMaxSpeed = maxSpeed * maxSpeed;
+            velocity = new Vector3(0, 0, 0);
             timer = 0;
             
             steerings.AddRange(GetComponents<Steering>());

@@ -21,9 +21,9 @@ namespace Rpg
         public int MP = 100;
 
         public float PhysicalResistance { get { return physicalResistance; } set { physicalResistance = value; valueChanged(); } }
-        public float physicalResistance = 1.0f;
+        public float physicalResistance = 0.0f;
         public float MagicResistance { get { return magicResistance; } set { magicResistance = value; valueChanged(); } }
-        public float magicResistance = 1.0f;
+        public float magicResistance = 0.0f;
         public int AttackValue { get { return attackValue; } set { attackValue = value; valueChanged(); } }
         public int attackValue = 10;
         public int AttackSpeed { get { return attackSpeed; } set { attackSpeed = value; valueChanged(); } }
@@ -34,14 +34,14 @@ namespace Rpg
         public float spellPower = 1.0f;
         public float SpellPower { get { return spellPower; } set { spellPower = value; valueChanged(); } }
         public float CritRate { get { return critRate; } set { critRate = value; valueChanged(); } }
-        public float critRate = 1.0f;
+        public float critRate = 0.0f;
         public float DodgeRate { get { return dodgeRate; } set { dodgeRate = value; valueChanged(); } }
         public float dodgeRate = 0.0f;
         public int HpRestoreSpeed { get { return hpRestoreSpeed; } set { hpRestoreSpeed = value; valueChanged(); } }
-        public int hpRestoreSpeed = 1;
+        public int hpRestoreSpeed = 0;
         public int MpRestoreSpeed { get { return mpRestoreSpeed; } set { mpRestoreSpeed = value; valueChanged(); } }
-        public int mpRestoreSpeed = 1;
-        public int CritcalMult = 1;
+        public int mpRestoreSpeed = 0;
+        public int CritcalMult = 2;
 
         private WaitForSeconds restoreDelta = new WaitForSeconds(1);
 

@@ -17,6 +17,8 @@ namespace EventEditor
         public event UnityAction<Collider> stay;
         public event UnityAction<Collider> exit;
 
+        private bool ifFirst = false;
+
         // Use this for initialization
         void Start()
         {
@@ -47,7 +49,11 @@ namespace EventEditor
 
         void OnTriggerStay(Collider collider)
         {
-
+            if (!ifFirst)
+            {
+                Send(this, collider);
+                ifFirst = true;
+            }
         }
 
         void OnTriggerExit(Collider collider)

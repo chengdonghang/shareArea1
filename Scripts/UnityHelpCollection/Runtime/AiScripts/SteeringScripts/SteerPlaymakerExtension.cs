@@ -55,6 +55,8 @@ namespace HutongGames.PlayMaker.Actions {
                 case ForceType.wander:
                     sys.WanderOn(wanderRadius.Value, wanderJitter.Value, wanderDis.Value);
                     break;
+                default:
+                    break;
             }
        }
 
