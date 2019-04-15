@@ -3,7 +3,9 @@ using Tools;
 
 public abstract class Skills : ScriptableObject
 {
+    public string id = "-1";
     public int playAnim = 1;
+    public float coldTime = 2.0f;
 
     public abstract void ReleaseNow(GameObject hero);
     public abstract void ReleaseAnimEvent1(GameObject hero);
@@ -13,13 +15,12 @@ public abstract class Skills : ScriptableObject
 
 public class LineAttack : Skills
 {
-    public GameObject[] spawnParticles = new GameObject[3];
+    public GameObject[] spawnParticles = new GameObject[1];
 
     public override void ReleaseAnimEvent1(GameObject hero)
     {
-        Instantiate(spawnParticles[0], hero.transform.Find("SkillSpawn").position, hero.transform.rotation);
-        WaitTimeManager.WaitTime(0.5f, delegate () { Instantiate(spawnParticles[1], hero.transform.Find("SkillSpawn").position, hero.transform.rotation); });
-        WaitTimeManager.WaitTime(0.5f, delegate () { Instantiate(spawnParticles[2], hero.transform.Find("SkillSpawn").position, hero.transform.rotation); });
+        var obj = hero.transform.Find("SpawnLow");
+        Instantiate(spawnParticles[0], obj.position, obj.rotation);
     }
 
     public override void ReleaseAnimEvent2(GameObject hero)

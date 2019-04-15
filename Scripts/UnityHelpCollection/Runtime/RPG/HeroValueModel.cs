@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Rpg
 {
     [RequireComponent(typeof(GameValuesSys), typeof(AttributeSys))]
-    public class HeroManager : MonoBehaviour, ModelInterface
+    public class HeroValueModel : MonoBehaviour, ModelInterface
     {
         public event Action<float> HpChanged;
         public event Action<float> MpChanged;
@@ -16,13 +16,21 @@ namespace Rpg
         public event Action<EquipmentType, string> EquipChanged;
         public event Action<int, int, string> PackageChanged;
         public event Action AttributeChanged;
+        public event Action<int> bloodVialChanged;
+        public event Action<int> magicVialChanged;
+        public event Action<int, float> skillTimeCold;
 
         public GameValuesSys valuesSys;
         public AttributeSys attrSys;
 
+        #region 拥有物
         private Equipment[,] packages = new Equipment[8, 8];
         private Dictionary<EquipmentType, Equipment> equips = new Dictionary<EquipmentType, Equipment>();
         public Skills[] skills = new Skills[4];
+        private float[] nowColdTime = new float[4];
+        private int bloodVialNum = 0;
+        private int magicVialNum = 0;
+        #endregion
 
         public HeroLevelData heroLevelData;
         private int nowLevel = 1;
@@ -34,7 +42,6 @@ namespace Rpg
 
         void Awake()
         {
-
             valuesSys = GetComponent<GameValuesSys>();
             attrSys = GetComponent<AttributeSys>();
 
@@ -57,7 +64,10 @@ namespace Rpg
 
             nowLevel = 1;
             nowExperience = 0;
+            SetSkill(0, "1");
         }
+
+
 
         private void Update()
         {
@@ -67,7 +77,25 @@ namespace Rpg
                 LevelChanged(1);
                 init = true;
             }
+            for(int i = 0; i < nowColdTime.Length; i++)
+            {
+                if (nowColdTime[i] > 0)
+                {
+                    nowColdTime[i] -= Time.deltaTime;
+                    skillTimeCold(i,(skills[i].coldTime - nowColdTime[i]) / nowColdTime[i]);
+                }
+                else
+                {
+                    nowColdTime[i] = 0;
+                    skillTimeCold(i, 1);
+                }
+            }
+        }
 
+        public bool SkillInCold(int index)
+        {
+            if (nowColdTime[index] != 0) return true;
+            else return false;
         }
 
         public void AddExperience(int add)
@@ -197,8 +225,13 @@ namespace Rpg
 
         public void SetSkill(int slotNumber, string skillID)
         {
-            if (slotNumber < 0 || slotNumber > 5) { Debug.LogError("index error"); return; }
-            if (skillID == "-1") { }
+            if (slotNumber < 0 || slotNumber >= 5) { Debug.LogError("index error"); return; }
+            if (skillID == "-1") { SkillChanged(slotNumber, "-1"); }
+            else
+            {
+                skills[slotNumber] = Resources.Load<Skills>(Path.respDataSkill + skillID);
+                SkillChanged(slotNumber, skillID);
+            }
         }
 
         public bool AddAttribtePoint(ValuesType valuesType)
@@ -270,6 +303,36 @@ namespace Rpg
                 default:
                     Debug.LogError("error");
                     return false;
+            }
+        }
+
+        public void AddBloodOrMagicVial(bool isBloodVial)
+        {
+            if (isBloodVial)
+            {
+                bloodVialNum++;
+                bloodVialChanged(bloodVialNum);
+            }
+            else
+            {
+                magicVialNum++;
+                magicVialChanged(magicVialNum);
+            }
+        }
+
+        public void UseBloodOrMagicVial(bool isBloodVial)
+        {
+            if (isBloodVial && bloodVialNum > 0)
+            {
+                bloodVialNum--;
+                valuesSys.ChangeHP(50);
+                bloodVialChanged(bloodVialNum);
+            }
+            if (!isBloodVial && magicVialNum > 0)
+            {
+                magicVialNum--;
+                valuesSys.ChangeMP(50);
+                magicVialChanged(magicVialNum);
             }
         }
     }

@@ -5,6 +5,7 @@ namespace Rpg
 {
     public static class m_Path
     {
+        //用于AssetDatabase
         public static string pathBase = "Assets/shareArea1/Resources/";
         public static string pPicture = pathBase + "Source/Photo/";
         public static string pPicEquip = pPicture + "Equip/";
@@ -12,7 +13,9 @@ namespace Rpg
         public static string pData = pathBase + "Data/";
         public static string pDataEquip = pData + "Equip/";
         public static string pDataSkill = pData + "Skill/";
+        public static string PDataLevelData = pData + "LevelData/";
 
+        //用于Resources
         public static string resPathBase = "shareArea1/";
         public static string respPicture = resPathBase + "Source/Photo/";
         public static string respPicEquip = respPicture + "Equip/";

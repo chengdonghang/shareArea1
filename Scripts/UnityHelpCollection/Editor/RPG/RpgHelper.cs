@@ -7,7 +7,7 @@ using OfficeOpenXml;
 
 namespace Rpg
 {
-    public class ExcelLoader
+    public class RpgHelper
     {
         public static string mPath = "/shareArea1/Resources/Data/Excel/";
         [MenuItem("Excel/Equipment")]
@@ -78,9 +78,15 @@ namespace Rpg
         static void CreateSkill()
         {
             LineAttack lineAttack = ScriptableObject.CreateInstance<LineAttack>();
-            SaveObjData(lineAttack, "lineAttack", m_Path.pDataEquip);
+            SaveObjData(lineAttack, "lineAttack", m_Path.pDataSkill);
         }
 
+        [MenuItem("Excel/HeroLevelData")]
+        static void CreateLevelData()
+        {
+            HeroLevelData data = ScriptableObject.CreateInstance<HeroLevelData>();
+            SaveObjData(data, "WarriorLevelData", m_Path.PDataLevelData);
+        }
 
         [MenuItem("Excel/CreateSheet")]
         static void CreateSheet()

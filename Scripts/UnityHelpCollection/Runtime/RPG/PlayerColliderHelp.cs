@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Rpg
 {
+    /// <summary>
+    /// 这个脚本由于反射的原因必须调用OnTriggerEnter
+    /// </summary>
     public abstract class PlayerColliderHelp:MonoBehaviour
     {
         public string WeaponName = "Weapon";

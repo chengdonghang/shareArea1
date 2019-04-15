@@ -11,14 +11,14 @@ public class UIController : MonoBehaviour,ControlInterface
     SwitchTab nowTab = SwitchTab.attribute;
 
     public UIManager uiManager;
-    public HeroManager model;
+    public HeroValueModel model;
 
     private void Awake()
     {
         if (!model)
         {
             Debug.LogWarning("找寻tag为Player的物体获取model");
-            model = GameObject.FindWithTag("PLayer").GetComponent<HeroManager>();
+            model = GameObject.FindWithTag("PLayer").GetComponent<HeroValueModel>();
         }
     }
 
@@ -30,32 +30,6 @@ public class UIController : MonoBehaviour,ControlInterface
             nowTab = tab;
             uiManager.tabPages[nowTab].SetActive(true);
         }
-    }
-
-    public void StartToTalk()
-    {
-        if (!TalkModeIsOn)
-        {
-            uiManager.ButtomPanel.SetActive(false);
-            uiManager.TalkPanel.SetActive(true);
-            TalkModeIsOn = true;
-        }
-    }
-
-    public void EndTalk()
-    {
-        if (TalkModeIsOn)
-        {
-            uiManager.ButtomPanel.SetActive(true);
-            uiManager.TalkPanel.SetActive(false);
-            TalkModeIsOn = false;
-        }
-    }
-
-    public void NextTalk(string name,string data)
-    {
-        uiManager.TalkerName.text = name+":";
-        uiManager.TalkData.text = data;
     }
 
     public void TabBtnClick(Button button)

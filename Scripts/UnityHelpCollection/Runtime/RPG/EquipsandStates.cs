@@ -421,7 +421,6 @@ namespace Rpg
         }
     }
 
-
     public class EquipmentsFactory
     {
         public IEquip SpawnProduct(ValuesType equipType, int value)

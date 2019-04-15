@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
     public Image HeroImage;
     public Slider experience;
     public Text LevelNumber;
+    private Text _bloodVialNum;
+    private Text _magicVialNum;
     private Image[] skillsImage = new Image[6];
     private Button[] skillsBtn = new Button[6];
     private Image[,] packageImage = new Image[8, 8];
@@ -34,27 +36,42 @@ public class UIManager : MonoBehaviour
     public Dictionary<Button, ValuesType> valuesBtnMinus = new Dictionary<Button, ValuesType>();
     public Text attrPointText;
 
-    public HeroManager model;
+    public HeroValueModel model;
     public UIController control;
+
+    public enum SkillSlot
+    {
+        firstSkill,
+        secondSkill,
+        thirdSkill,
+        FourthSkill,
+        bloodVial,
+        magicVial
+    }
 
     private void Start()
     {
         if (!model)
         {
             Debug.LogWarning("找寻tag为Player的物体获取model");
-            model = GameObject.FindWithTag("PLayer").GetComponent<HeroManager>();
+            model = GameObject.FindWithTag("PLayer").GetComponent<HeroValueModel>();
         }
         ButtomPanel = transform.Find("底部面板").gameObject;
         HeroPanel = transform.Find("人物面板").gameObject;
 
         #region 初始化技能面板
-        for (int i = 1; i <= 6; i++)
+        for (int i = 1; i <= 4; i++)
         {
             var val = ButtomPanel.transform.Find("skill" + i.ToString());
             skillsImage[i - 1] = val.Find("Image").GetComponent<Image>();
-            skillsImage[i - 1].sprite = null;
             skillsBtn[i - 1] = val.GetComponent<Button>();
         }
+        var val1 = ButtomPanel.transform.Find("bloodVial");
+        _bloodVialNum = val1.transform.Find("Num").GetComponent<Text>();
+        var val2 = ButtomPanel.transform.Find("magicVial");
+        _magicVialNum = val2.transform.Find("Num").GetComponent<Text>();
+        _bloodVialNum.text = "0";
+        _magicVialNum.text = "0";
         #endregion
 
         #region 初始化属性界面
@@ -188,8 +205,27 @@ public class UIManager : MonoBehaviour
         model.ExperienceChanged += ExperienceChanged;
         model.LevelChanged += LevelChanged;
         model.SkillChanged += SkillChanged;
+        model.skillTimeCold += skillTimeCold;
         model.PackageChanged += PackageChanged;
         model.EquipChanged += EquipChanged;
+        model.bloodVialChanged += bloodVialChanged;
+        model.magicVialChanged += magicVialChanged;
+    }
+
+    private void skillTimeCold(int arg1, float arg2)
+    {
+        if(arg2 != 1)
+            skillsImage[arg1].fillAmount = arg2;
+    }
+
+    private void magicVialChanged(int obj)
+    {
+        _magicVialNum.text = obj.ToString();
+    }
+
+    private void bloodVialChanged(int obj)
+    {
+        _bloodVialNum.text = obj.ToString();
     }
 
     private void Update()
@@ -229,10 +265,16 @@ public class UIManager : MonoBehaviour
         equips[type].sprite = sprite;
     }
 
-
-    private void SkillChanged(int arg1, string arg2)
+    void SkillChanged(SkillSlot skillSlot,string id)
     {
-        skillsImage[arg1].sprite = Resources.Load<Sprite>("Image/" + arg2.ToString() + ".jpg");
+        if (id == "-1") { }
+    }
+
+
+    private void SkillChanged(int index, string id)
+    {
+        if(id == "-1") skillsImage[index].sprite = 
+        skillsImage[index].sprite = Resources.Load<Sprite>(Path.respPicSkill + id);
     }
 
     private void LevelChanged(int obj)

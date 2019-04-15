@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Rpg;
 
-[RequireComponent(typeof(HeroManager))]
+[RequireComponent(typeof(HeroValueModel))]
 public class HeroBodyController : MonoBehaviour
 {
     public float MoveSpeed = 15.0f;
@@ -11,12 +11,12 @@ public class HeroBodyController : MonoBehaviour
 
     public Animator animator;
     public Transform Camera;
-    public HeroManager heroManager;
+    public HeroValueModel heroManager;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        heroManager = GetComponent<HeroManager>();
+        heroManager = GetComponent<HeroValueModel>();
     }
 
     void PlayAnim(string name)
@@ -112,22 +112,44 @@ public class HeroBodyController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            ReleaseSkill(heroManager.skills[0]);
+            if (!heroManager.SkillInCold(0))
+                ReleaseSkill(heroManager.skills[0]);
+            else
+                Debug.Log("Skill In Cold");
             return false;
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            ReleaseSkill(heroManager.skills[1]);
+            if (!heroManager.SkillInCold(1))
+                ReleaseSkill(heroManager.skills[1]);
+            else
+                Debug.Log("Skill In Cold");
             return false;
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            ReleaseSkill(heroManager.skills[2]);
+            if (!heroManager.SkillInCold(2))
+                ReleaseSkill(heroManager.skills[2]);
+            else
+                Debug.Log("Skill In Cold");
             return false;
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            ReleaseSkill(heroManager.skills[3]);
+            if (!heroManager.SkillInCold(3))
+                ReleaseSkill(heroManager.skills[3]);
+            else
+                Debug.Log("Skill In Cold");
+            return false;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            heroManager.UseBloodOrMagicVial(true);
+            return false;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            heroManager.UseBloodOrMagicVial(true);
             return false;
         }
         else return true;
@@ -188,7 +210,7 @@ public class HeroBodyController : MonoBehaviour
         vector.y = 0;
         RotateAroundYAxis(h * MoveSpeed);
         //Debug.DrawRay(transform.position, vector * 100);
-        if(info.IsName("walk")||info.IsName("walkBack"))
+        if(info.IsName("walkForward")||info.IsName("walkBack"))
             MoveInWorldSpace(vector.normalized * v * MoveSpeed * Time.deltaTime);
     }
     #endregion

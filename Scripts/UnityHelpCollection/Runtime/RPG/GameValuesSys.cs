@@ -20,6 +20,9 @@ namespace Rpg
         public int HP = 100;
         public int MP = 100;
 
+        public int HasBloodVialNumber = 0;
+        public int HasMagicVialNumber = 0;
+
         public float PhysicalResistance { get { return physicalResistance; } set { physicalResistance = value; valueChanged(); } }
         public float physicalResistance = 0.0f;
         public float MagicResistance { get { return magicResistance; } set { magicResistance = value; valueChanged(); } }

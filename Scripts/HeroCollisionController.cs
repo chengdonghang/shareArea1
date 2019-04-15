@@ -3,10 +3,11 @@ using System.Collections;
 using Rpg;
 
 [RequireComponent(typeof(GameValuesSys),typeof(AttributeSys))]
-public class HeroValueController : MonoBehaviour
+public class HeroCollisionController : MonoBehaviour
 {
     private GameValuesSys valuesSys;
     private AttributeSys attributeSys;
+    private HeroValueModel valueModel;
 
     private void Awake()
     {
@@ -14,19 +15,17 @@ public class HeroValueController : MonoBehaviour
         attributeSys = GetComponent<AttributeSys>();
     }
 
-    
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        if (collision.collider.tag == "Enemy") 
+        if (collision.tag == "Enemy") 
         {
-            var his = collision.collider.GetComponent<GameValuesSys>();
+            var his = collision.GetComponent<GameValuesSys>();
             var damage = his.givePhyDamage();
             valuesSys.HurtByPhysical(damage);
         }
-        else if(collision.collider.tag == "EnemySpell") 
+        else if(collision.tag == "EnemySpell") 
         {
-            var his = collision.collider.GetComponent<SpellValue>();
+            var his = collision.GetComponent<SpellValue>();
             var damage = his.owner.giveMagicDamage(his.magicDamage);
             valuesSys.HurtByMagic(damage);
         }
