@@ -14,5 +14,4 @@ public class Test : MonoBehaviour
         manager.SetPackage(0, 0, "1");
         manager.SetEquip(EquipmentType.weapon, "1");
     }
-
 }

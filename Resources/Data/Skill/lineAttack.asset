@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: lineAttack
+  m_EditorClassIdentifier: Assembly-CSharp::LineAttack
+  playAnim: 2
+  spawnParticles:
+  - {fileID: 114558, guid: c38cc4f8844b6ae49bcac0c9adc4367b, type: 3}
+  - {fileID: 151854, guid: 2f308eb32384ace4eb423794eb669a9c, type: 3}
+  - {fileID: 173088, guid: 5fb3675bd2c8d92459cc1f5d57d614a0, type: 3}

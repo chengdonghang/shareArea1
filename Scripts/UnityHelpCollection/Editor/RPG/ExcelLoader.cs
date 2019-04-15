@@ -58,12 +58,12 @@ namespace Rpg
                             equip.ID = itemID;
                             equip.name = sheet.Cells[i, 2].Text;
                             equip.Name = sheet.Cells[i, 2].Text;
-                            for (int j = 3; j < 3 + Enum.GetNames(typeof(ValuesType)).Length; j++)
+                            for (int j = 5; j < 5 + Enum.GetNames(typeof(ValuesType)).Length; j++)
                             {
                                 Debug.Log(sheet.Cells[i, j].Text);
                                 int value = int.Parse(sheet.Cells[i, j].Text);
                                 if (value != 0)
-                                    equip.spawns.Add(new Equipment.SpawnEquip((ValuesType)(j - 3), value));
+                                    equip.spawns.Add(new Equipment.SpawnEquip((ValuesType)(j - 5), value));
                             }
                             SaveObjData(equip, equip.ID, m_Path.pDataEquip);
                         }
@@ -74,6 +74,12 @@ namespace Rpg
 
         }
 
+        [MenuItem("Excel/CreateSkill")]
+        static void CreateSkill()
+        {
+            LineAttack lineAttack = ScriptableObject.CreateInstance<LineAttack>();
+            SaveObjData(lineAttack, "lineAttack", m_Path.pDataEquip);
+        }
 
 
         [MenuItem("Excel/CreateSheet")]

@@ -7,6 +7,7 @@ using Rpg;
 public class UIController : MonoBehaviour,ControlInterface
 {
     private bool HeroPanelIsOn = false;
+    private bool TalkModeIsOn = false;
     SwitchTab nowTab = SwitchTab.attribute;
 
     public UIManager uiManager;
@@ -29,6 +30,32 @@ public class UIController : MonoBehaviour,ControlInterface
             nowTab = tab;
             uiManager.tabPages[nowTab].SetActive(true);
         }
+    }
+
+    public void StartToTalk()
+    {
+        if (!TalkModeIsOn)
+        {
+            uiManager.ButtomPanel.SetActive(false);
+            uiManager.TalkPanel.SetActive(true);
+            TalkModeIsOn = true;
+        }
+    }
+
+    public void EndTalk()
+    {
+        if (TalkModeIsOn)
+        {
+            uiManager.ButtomPanel.SetActive(true);
+            uiManager.TalkPanel.SetActive(false);
+            TalkModeIsOn = false;
+        }
+    }
+
+    public void NextTalk(string name,string data)
+    {
+        uiManager.TalkerName.text = name+":";
+        uiManager.TalkData.text = data;
     }
 
     public void TabBtnClick(Button button)

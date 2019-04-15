@@ -19,4 +19,6 @@ MonoBehaviour:
   - equipType: 0
     value: 100
   - equipType: 2
-    value: 5
+    value: 15
+  - equipType: 15
+    value: 20

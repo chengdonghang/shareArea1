@@ -3,7 +3,7 @@ using System.Collections;
 using Rpg;
 
 [RequireComponent(typeof(GameValuesSys),typeof(AttributeSys))]
-public class NewMonoBehaviour : MonoBehaviour
+public class HeroValueController : MonoBehaviour
 {
     private GameValuesSys valuesSys;
     private AttributeSys attributeSys;

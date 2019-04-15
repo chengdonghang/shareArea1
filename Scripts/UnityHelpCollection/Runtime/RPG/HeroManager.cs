@@ -22,6 +22,7 @@ namespace Rpg
 
         private Equipment[,] packages = new Equipment[8, 8];
         private Dictionary<EquipmentType, Equipment> equips = new Dictionary<EquipmentType, Equipment>();
+        public Skills[] skills = new Skills[4];
 
         public HeroLevelData heroLevelData;
         private int nowLevel = 1;

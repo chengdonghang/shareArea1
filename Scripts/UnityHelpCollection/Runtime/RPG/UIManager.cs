@@ -9,6 +9,10 @@ public class UIManager : MonoBehaviour
 {
     public GameObject ButtomPanel;
     public GameObject HeroPanel;
+    public GameObject TalkPanel;
+
+    public Text TalkerName;
+    public Text TalkData;
 
     public Image HP;
     public Image MP;
