@@ -65,9 +65,10 @@ namespace Rpg
             nowLevel = 1;
             nowExperience = 0;
             SetSkill(0, "1");
+            SetSkill(1, "2");
+            SetSkill(2, "3");
+            SetSkill(3, "4");
         }
-
-
 
         private void Update()
         {
@@ -77,12 +78,12 @@ namespace Rpg
                 LevelChanged(1);
                 init = true;
             }
-            for(int i = 0; i < nowColdTime.Length; i++)
+            for(int i = 0; i < skills.Length; i++)
             {
                 if (nowColdTime[i] > 0)
                 {
                     nowColdTime[i] -= Time.deltaTime;
-                    skillTimeCold(i,(skills[i].coldTime - nowColdTime[i]) / nowColdTime[i]);
+                    skillTimeCold(i,(skills[i].coldTime - nowColdTime[i]) / skills[i].coldTime);
                 }
                 else
                 {
@@ -90,6 +91,11 @@ namespace Rpg
                     skillTimeCold(i, 1);
                 }
             }
+        }
+
+        public void SetSkillInCold(int index)
+        {
+            nowColdTime[index] = skills[index].coldTime;
         }
 
         public bool SkillInCold(int index)
@@ -102,7 +108,7 @@ namespace Rpg
         {
             int rea = 0;
             if (heroLevelData)
-                rea = heroLevelData.levelReachExperience[nowLevel];
+                rea = heroLevelData.levelReachExperience[nowLevel - 1];
             else
                 rea = 100;
             if (add + nowExperience >= rea)
@@ -115,12 +121,12 @@ namespace Rpg
                     leftAttrPoint += 10;
                 AttributeChanged();
                 LevelChanged(nowLevel);
-                ExperienceChanged(nowExperience);
+                ExperienceChanged(nowExperience / heroLevelData.levelReachExperience[nowLevel-1]);
             }
             else
             {
                 nowExperience += add;
-                ExperienceChanged(nowExperience);
+                ExperienceChanged(nowExperience / heroLevelData.levelReachExperience[nowLevel - 1]);
             }
         }
 

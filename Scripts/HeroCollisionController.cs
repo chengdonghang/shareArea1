@@ -17,9 +17,10 @@ public class HeroCollisionController : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
+        Debug.Log(collision.tag);
         if (collision.tag == "Enemy") 
         {
-            var his = collision.GetComponent<GameValuesSys>();
+            var his = collision.GetComponentInParent<GameValuesSys>();
             var damage = his.givePhyDamage();
             valuesSys.HurtByPhysical(damage);
         }

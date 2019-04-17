@@ -18,7 +18,7 @@ public class UIController : MonoBehaviour,ControlInterface
         if (!model)
         {
             Debug.LogWarning("找寻tag为Player的物体获取model");
-            model = GameObject.FindWithTag("PLayer").GetComponent<HeroValueModel>();
+            model = GameObject.FindWithTag("Player").GetComponent<HeroValueModel>();
         }
     }
 
@@ -29,6 +29,25 @@ public class UIController : MonoBehaviour,ControlInterface
             uiManager.tabPages[nowTab].SetActive(false);
             nowTab = tab;
             uiManager.tabPages[nowTab].SetActive(true);
+        }
+    }
+
+    public void ChangeGuideText(string con)
+    {
+        uiManager.GuideText.text = con;
+    }
+
+    public void OpenStoryBoard(bool ifOpen)
+    {
+        if (ifOpen)
+        {
+            uiManager.storyBoard.SetActive(true);
+            uiManager.ButtomPanel.SetActive(false);
+        }
+        else
+        {
+            uiManager.storyBoard.SetActive(false);
+            uiManager.ButtomPanel.SetActive(true);
         }
     }
 

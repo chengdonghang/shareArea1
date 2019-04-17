@@ -20,6 +20,7 @@ public class FindPlayerEvent : m_Event
         Debug.Log("happen");
         foreach(var _fsm in fsms)
         {
+            if (_fsm == null) continue;
             var player = _fsm.FsmVariables.GetFsmGameObject("enemy");
             player.Value = _player;
         }

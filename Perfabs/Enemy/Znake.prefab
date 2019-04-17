@@ -361,9 +361,11 @@ GameObject:
   - component: {fileID: 1423794769619968523}
   - component: {fileID: 8837075001603526820}
   - component: {fileID: 6126520822731265907}
+  - component: {fileID: 8523420948037150074}
+  - component: {fileID: 3967602120461556905}
   m_Layer: 10
   m_Name: Znake
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1431,7 +1433,7 @@ MonoBehaviour:
         - stopOnExit
         paramDataPos: 00000000000000000000000001000000000000000000000001000000000000000100000004000000
         paramByteDataSize: 00000000000000000000000000000000000000000400000000000000000000000000000001000000
-    - name: Death
+    - name: Dead
       description: 
       colorIndex: 0
       position:
@@ -1439,30 +1441,22 @@ MonoBehaviour:
         x: 371
         y: 300
         width: 100
-        height: 32
+        height: 16
       isBreakpoint: 0
       isSequence: 0
       hideUnused: 0
-      transitions:
-      - fsmEvent:
-          name: FINISHED
-          isSystemEvent: 1
-          isGlobal: 0
-        toState: State 1
-        linkStyle: 0
-        linkConstraint: 0
-        colorIndex: 0
+      transitions: []
       actionData:
         actionNames:
-        - HutongGames.PlayMaker.Actions.DestroySelf
         - HutongGames.PlayMaker.Actions.PlayAnimation
+        - HutongGames.PlayMaker.Actions.DestroySelf
         customNames:
         - 
         - 
         actionEnabled: 0101
         actionIsOpen: 0101
-        actionStartIndex: 0000000001000000
-        actionHashCodes: 62f952034f383600
+        actionStartIndex: 0000000007000000
+        actionHashCodes: 4f38360062f95203
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams:
@@ -1519,9 +1513,8 @@ MonoBehaviour:
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 110000001400000012000000070000000f000000170000001700000001000000
+        paramDataType: 1400000012000000070000000f00000017000000170000000100000011000000
         paramName:
-        - detachChildren
         - gameObject
         - animName
         - playMode
@@ -1529,69 +1522,9 @@ MonoBehaviour:
         - finishEvent
         - loopEvent
         - stopOnExit
-        paramDataPos: 0000000000000000000000000000000000000000000000000100000004000000
-        paramByteDataSize: 0000000000000000000000000400000000000000000000000000000001000000
-    - name: State 1
-      description: 
-      colorIndex: 0
-      position:
-        serializedVersion: 2
-        x: 551
-        y: 313
-        width: 100
-        height: 16
-      isBreakpoint: 0
-      isSequence: 0
-      hideUnused: 0
-      transitions: []
-      actionData:
-        actionNames:
-        - HutongGames.PlayMaker.Actions.DestroySelf
-        customNames:
-        - 
-        actionEnabled: 01
-        actionIsOpen: 01
-        actionStartIndex: 00000000
-        actionHashCodes: 62f95203
-        unityObjectParams: []
-        fsmGameObjectParams: []
-        fsmOwnerDefaultParams: []
-        animationCurveParams: []
-        functionCallParams: []
-        fsmTemplateControlParams: []
-        fsmEventTargetParams: []
-        fsmPropertyParams: []
-        layoutOptionParams: []
-        fsmStringParams: []
-        fsmObjectParams: []
-        fsmVarParams: []
-        fsmArrayParams: []
-        fsmEnumParams: []
-        fsmFloatParams: []
-        fsmIntParams: []
-        fsmBoolParams:
-        - useVariable: 0
-          name: 
-          tooltip: 
-          showInInspector: 0
-          networkSync: 0
-          value: 0
-        fsmVector2Params: []
-        fsmVector3Params: []
-        fsmColorParams: []
-        fsmRectParams: []
-        fsmQuaternionParams: []
-        stringParams: []
-        byteData: 
-        arrayParamSizes: 
-        arrayParamTypes: []
-        customTypeSizes: 
-        customTypeNames: []
-        paramDataType: 11000000
-        paramName:
         - detachChildren
-        paramDataPos: 00000000
-        paramByteDataSize: 00000000
+        paramDataPos: 0000000000000000000000000000000000000000010000000400000000000000
+        paramByteDataSize: 0000000000000000040000000000000000000000000000000100000000000000
     events:
     - name: FINISHED
       isSystemEvent: 1
@@ -1627,7 +1560,7 @@ MonoBehaviour:
         name: DEAD
         isSystemEvent: 0
         isGlobal: 0
-      toState: Death
+      toState: Dead
       linkStyle: 0
       linkConstraint: 0
       colorIndex: 0
@@ -1748,6 +1681,8 @@ MonoBehaviour:
   magicLimit: 100
   HP: 100
   MP: 100
+  HasBloodVialNumber: 0
+  HasMagicVialNumber: 0
   physicalResistance: 1
   magicResistance: 1
   attackValue: 10
@@ -1783,6 +1718,7 @@ MonoBehaviour:
   WeaponName: Weapon
   SpellName: PlayerSpell
   PlayerName: Player
+  experience: 10
 --- !u!54 &8837075001603526820
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1813,6 +1749,116 @@ CapsuleCollider:
   m_Height: 1.0880673
   m_Direction: 1
   m_Center: {x: 0, y: 0.5410074, z: 0.1818881}
+--- !u!82 &8523420948037150074
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112086595489551904}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &3967602120461556905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112086595489551904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605f8aaad3052c84ca8dc41263a114f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackClip: {fileID: 8300000, guid: d736f92a526eb984c9b9cc1aae0b76be, type: 3}
+  deadClip: {fileID: 8300000, guid: c4f7d37d0f15dd4488025db1dc2de7de, type: 3}
 --- !u!1 &1172934759602069369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1857,7 +1903,7 @@ GameObject:
   - component: {fileID: 7663071373250579638}
   m_Layer: 12
   m_Name: attackObj
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

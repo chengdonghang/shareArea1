@@ -77,8 +77,14 @@ namespace Rpg
         [MenuItem("Excel/CreateSkill")]
         static void CreateSkill()
         {
-            LineAttack lineAttack = ScriptableObject.CreateInstance<LineAttack>();
-            SaveObjData(lineAttack, "lineAttack", m_Path.pDataSkill);
+            IceAttack lineAttack = ScriptableObject.CreateInstance<IceAttack>();
+            SaveObjData(lineAttack, "1", m_Path.pDataSkill);
+            FireAttack fireAttack = ScriptableObject.CreateInstance<FireAttack>();
+            SaveObjData(fireAttack, "2", m_Path.pDataSkill);
+            MuteAttack muteAttack = ScriptableObject.CreateInstance<MuteAttack>();
+            SaveObjData(muteAttack, "3", m_Path.pDataSkill);
+            TribleAttack tribleAttack = ScriptableObject.CreateInstance<TribleAttack>();
+            SaveObjData(tribleAttack, "4", m_Path.pDataSkill);
         }
 
         [MenuItem("Excel/HeroLevelData")]

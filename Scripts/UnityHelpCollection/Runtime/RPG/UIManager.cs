@@ -35,6 +35,8 @@ public class UIManager : MonoBehaviour
     public Dictionary<Button, ValuesType> valuesBtnPlus = new Dictionary<Button, ValuesType>();
     public Dictionary<Button, ValuesType> valuesBtnMinus = new Dictionary<Button, ValuesType>();
     public Text attrPointText;
+    public Text GuideText;
+    public GameObject storyBoard;
 
     public HeroValueModel model;
     public UIController control;
@@ -51,19 +53,27 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("UiManager");
         if (!model)
         {
             Debug.LogWarning("找寻tag为Player的物体获取model");
-            model = GameObject.FindWithTag("PLayer").GetComponent<HeroValueModel>();
+            model = GameObject.FindWithTag("Player").GetComponent<HeroValueModel>();
         }
         ButtomPanel = transform.Find("底部面板").gameObject;
         HeroPanel = transform.Find("人物面板").gameObject;
+
+        #region 讲解面板
+        storyBoard = GameObject.Find("Dialog").transform.Find("Dialog").gameObject;
+        if (storyBoard == null) Debug.LogError("未找到");
+        GuideText = transform.Find("讲解文字").GetComponent<Text>();
+        #endregion
 
         #region 初始化技能面板
         for (int i = 1; i <= 4; i++)
         {
             var val = ButtomPanel.transform.Find("skill" + i.ToString());
             skillsImage[i - 1] = val.Find("Image").GetComponent<Image>();
+            SkillChanged(i - 1, "-1");
             skillsBtn[i - 1] = val.GetComponent<Button>();
         }
         var val1 = ButtomPanel.transform.Find("bloodVial");
@@ -210,12 +220,17 @@ public class UIManager : MonoBehaviour
         model.EquipChanged += EquipChanged;
         model.bloodVialChanged += bloodVialChanged;
         model.magicVialChanged += magicVialChanged;
+        model.AttributeChanged += AttributeChanged;
+    }
+
+    private void AttributeChanged()
+    {
+        attrPointText.text = model.LeftAttrPoint.ToString();
     }
 
     private void skillTimeCold(int arg1, float arg2)
-    {
-        if(arg2 != 1)
-            skillsImage[arg1].fillAmount = arg2;
+    {  
+        skillsImage[arg1].fillAmount = arg2;
     }
 
     private void magicVialChanged(int obj)
@@ -235,7 +250,6 @@ public class UIManager : MonoBehaviour
             control.TabBtnClick(heroAvatar);
         }
     }
-
 
     private void attrValueChanged()
     {
@@ -265,15 +279,9 @@ public class UIManager : MonoBehaviour
         equips[type].sprite = sprite;
     }
 
-    void SkillChanged(SkillSlot skillSlot,string id)
-    {
-        if (id == "-1") { }
-    }
-
-
     private void SkillChanged(int index, string id)
     {
-        if(id == "-1") skillsImage[index].sprite = 
+        if(id == "-1") skillsImage[index].sprite = Resources.Load<Sprite>(Path.respPicSkill + id);
         skillsImage[index].sprite = Resources.Load<Sprite>(Path.respPicSkill + id);
     }
 

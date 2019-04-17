@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: cd65aa87a02c8444eb7ca8bf05dd458a, type: 3}
   m_Name: 1
-  m_EditorClassIdentifier: Assembly-CSharp::LineAttack
+  m_EditorClassIdentifier: 
   id: 1
   playAnim: 2
-  coldTime: 2
+  coldTime: 20
   spawnParticles:
   - {fileID: 168824, guid: a9902bc81c2fde74e92e62c4d780ec8b, type: 3}

@@ -12,11 +12,13 @@ public class HeroBodyController : MonoBehaviour
     public Animator animator;
     public Transform Camera;
     public HeroValueModel heroManager;
+    public Rigidbody m_Rigidbody;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         heroManager = GetComponent<HeroValueModel>();
+        m_Rigidbody = GetComponent<Rigidbody>();
     }
 
     void PlayAnim(string name)
@@ -53,11 +55,6 @@ public class HeroBodyController : MonoBehaviour
             return true;
         }
         return false;
-    }
-
-    void MoveInSelfSpace(Vector3 vector)
-    {
-        transform.Translate(vector, Space.Self);
     }
 
     void MoveInWorldSpace(Vector3 vector)
@@ -101,6 +98,8 @@ public class HeroBodyController : MonoBehaviour
 
     void SkillOver()
     {
+        Debug.Log(_nowSkill + "\t" + gameObject);
+        _nowSkill.SkillOver(gameObject);
         _nowSkill = null;
         animator.SetInteger("skillAttack", 0);
     }
@@ -110,10 +109,15 @@ public class HeroBodyController : MonoBehaviour
 
     bool skillController()
     {
+        //如果当前技能不为空
+        if (_nowSkill != null) return true;
         if (Input.GetKeyDown(KeyCode.Z))
         {
             if (!heroManager.SkillInCold(0))
+            {
+                heroManager.SetSkillInCold(0);
                 ReleaseSkill(heroManager.skills[0]);
+            }              
             else
                 Debug.Log("Skill In Cold");
             return false;
@@ -121,7 +125,10 @@ public class HeroBodyController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.X))
         {
             if (!heroManager.SkillInCold(1))
+            {
+                heroManager.SetSkillInCold(1);
                 ReleaseSkill(heroManager.skills[1]);
+            }
             else
                 Debug.Log("Skill In Cold");
             return false;
@@ -129,7 +136,11 @@ public class HeroBodyController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.C))
         {
             if (!heroManager.SkillInCold(2))
+            {
+                Debug.Log("hapeen");
+                heroManager.SetSkillInCold(2);
                 ReleaseSkill(heroManager.skills[2]);
+            }
             else
                 Debug.Log("Skill In Cold");
             return false;
@@ -137,7 +148,10 @@ public class HeroBodyController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.V))
         {
             if (!heroManager.SkillInCold(3))
+            {
+                heroManager.SetSkillInCold(3);
                 ReleaseSkill(heroManager.skills[3]);
+            }
             else
                 Debug.Log("Skill In Cold");
             return false;
@@ -157,6 +171,7 @@ public class HeroBodyController : MonoBehaviour
 
     void ReleaseSkill(Skills skills)
     {
+        Debug.Log("hapeen");
         if (skills == null) return;
         if (skills.playAnim < 0 && skills.playAnim >= 3)
         {
@@ -189,10 +204,8 @@ public class HeroBodyController : MonoBehaviour
         return true;
     }
 
-    void moveController()
+    void MoveAnimControl(float v)
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
         var info = animator.GetCurrentAnimatorStateInfo(0);
         if (Mathf.Approximately(v, 0.0f))
         {
@@ -202,25 +215,56 @@ public class HeroBodyController : MonoBehaviour
         else
         {
             if (v > 0.0f)
+            {
                 PlayAnim("walk");
+            }
+
             else if (v < 0.0f)
+            {
                 PlayAnim("walkBack");
+            }
         }
-        var vector = Camera.forward;
-        vector.y = 0;
-        RotateAroundYAxis(h * MoveSpeed);
-        //Debug.DrawRay(transform.position, vector * 100);
-        if(info.IsName("walkForward")||info.IsName("walkBack"))
-            MoveInWorldSpace(vector.normalized * v * MoveSpeed * Time.deltaTime);
+    }
+
+    void ApplyTurnRotation(Quaternion look)
+    {
+        var angle = look.eulerAngles;
+        angle.x = angle.z = 0;
+        look = Quaternion.Euler(angle);
+        transform.rotation = look;
+    }
+
+    void MoveControl(Vector3 move)
+    {
+        if (move.magnitude > 1f) move.Normalize();
+        //move = transform.InverseTransformDirection(move);
+        move = Vector3.ProjectOnPlane(move, Vector3.up);
+        var info = animator.GetCurrentAnimatorStateInfo(0);
+        if (info.IsName("walkForward") || info.IsName("walkBack"))
+        {
+            ApplyTurnRotation(Camera.rotation);
+            m_Rigidbody.MovePosition(transform.position + move * MoveSpeed * Time.deltaTime);
+        }   
+    }
+
+    void MoveController()
+    {
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        // calculate camera relative direction to move:
+        var m_CamForward = Vector3.Scale(Camera.forward, new Vector3(1, 0, 1)).normalized;
+        var move = v * m_CamForward + h * Camera.right;
+        MoveAnimControl(v);
+        MoveControl(move);
     }
     #endregion
 
     void Update()
     {
-        Debug.Log(_hasClicked);
+        //Debug.Log(_hasClicked);
         if(skillController())
             if (attackController())
-                moveController();
+                MoveController();
     }
 
 }
