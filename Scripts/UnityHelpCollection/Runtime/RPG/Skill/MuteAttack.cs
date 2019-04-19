@@ -11,21 +11,6 @@ namespace Rpg
         GameValuesSys sys;
         float lastValue;
 
-        public override void ReleaseAnimEvent1(GameObject hero)
-        {
-
-        }
-
-        public override void ReleaseAnimEvent2(GameObject hero)
-        {
-
-        }
-
-        public override void ReleaseAnimEvent3(GameObject hero)
-        {
-
-        }
-
         public override void SkillOver(GameObject hero)
         {
             sys.CritRate = lastValue;
@@ -33,7 +18,7 @@ namespace Rpg
 
         public override void ReleaseNow(GameObject hero)
         {
-            sys = hero.GetComponent<GameValuesSys>();
+            sys = GetValuesSys(hero);
             lastValue = sys.CritRate;
             sys.CritRate = 1.0f;
         }

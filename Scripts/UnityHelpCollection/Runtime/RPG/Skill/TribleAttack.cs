@@ -8,25 +8,18 @@ namespace Rpg
 {
     public class TribleAttack : Skills
     {
-
-        public override void ReleaseAnimEvent1(GameObject hero)
-        {
-
-        }
-
-        public override void ReleaseAnimEvent2(GameObject hero)
-        {
-
-        }
-
-        public override void ReleaseAnimEvent3(GameObject hero)
-        {
-
-        }
-
         public override void ReleaseNow(GameObject hero)
         {
+            var attr = GetAttributeSys(hero);
+            var value = GetValuesSys(hero);
+            lastValue1 = value.attackValue;
+            value.attackValue += attr.strength * 2;
+        }
 
+        public override void SkillOver(GameObject hero)
+        {
+            var value = GetValuesSys(hero);
+            value.attackValue += lastValue1;
         }
     }
 }

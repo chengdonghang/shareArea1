@@ -25,6 +25,7 @@ namespace EventEditor
             if ((m_trigger = this.GetComponent<Collider>()) == null)
                 m_trigger = gameObject.AddComponent<BoxCollider>();
             m_trigger.isTrigger = true;
+            gameObject.layer = 2;
         }
 
         void OnDrawGizmos()

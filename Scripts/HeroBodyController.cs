@@ -16,6 +16,7 @@ public class HeroBodyController : MonoBehaviour
 
     private void Start()
     {
+        Camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         animator = GetComponent<Animator>();
         heroManager = GetComponent<HeroValueModel>();
         m_Rigidbody = GetComponent<Rigidbody>();
